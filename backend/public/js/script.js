@@ -63,28 +63,55 @@ catInputOk.onclick = () => {
 };
 
 // 카테고리 삭제
+const ADMIN_PASSWORD = 'ad0501'; // 원하는 비밀번호만 수정
+
 catDelBtn.onclick = () => {
   if (catDeleteList.style.display === 'block') {
     catDeleteList.style.display = 'none';
     return;
   }
   catDeleteList.innerHTML = '';
-  categoryList.forEach((cat) => {
-    const item = document.createElement('div');
-    item.className = 'cat-del-item';
-    item.textContent = cat;
+  showPasswordInput();
+  catDeleteList.style.display = 'block';
+};
+
+function showPasswordInput() {
+  catDeleteList.innerHTML = `
+    <div class="cat-pw-wrap">
+      <input type="password" class="cat-pw-input" placeholder="관리자 비밀번호" autofocus />
+      <button class="cat-pw-btn">확인</button>
+    </div>
+  `;
+  const pwInput = catDeleteList.querySelector('.cat-pw-input');
+  const pwBtn = catDeleteList.querySelector('.cat-pw-btn');
+
+  pwBtn.onclick = () => {
+    if (pwInput.value === ADMIN_PASSWORD) {
+      renderCatDeleteList();
+    } else {
+      pwInput.value = '';
+      pwInput.focus();
+      pwInput.classList.add('cat-pw-error');
+      setTimeout(() => pwInput.classList.remove('cat-pw-error'), 800);
+    }
+  };
+}
+
+function renderCatDeleteList() {
+  catDeleteList.innerHTML = categoryList
+    .map((cat) => `<div class="cat-del-item">${cat}</div>`)
+    .join('');
+  Array.from(catDeleteList.children).forEach((item, i) => {
     item.onclick = () => {
-      // ★ 삭제/저장
+      const cat = categoryList[i];
       categoryList = categoryList.filter((c) => c !== cat);
-      localStorage.setItem('categoryList', JSON.stringify(categoryList)); // 추가/저장
+      localStorage.setItem('categoryList', JSON.stringify(categoryList));
       renderCategoryOptions();
       catDeleteList.style.display = 'none';
       if (categorySelect.value === cat) categorySelect.value = '';
     };
-    catDeleteList.appendChild(item);
   });
-  catDeleteList.style.display = 'block';
-};
+}
 
 const imgBox = document.getElementById('imgBox');
 const imgInput = imgBox.querySelector('input[type="file"]');
@@ -110,39 +137,52 @@ imgInput.addEventListener('change', function () {
   reader.readAsDataURL(file);
 });
 
-// 태그등록
+//태그등록
 const tagInput = document.getElementById('tagInput');
 const tagList = document.getElementById('tagList');
+const hiddenTags = document.getElementById('hiddenTags');
 
+// 태그 칩 생성 (변경 없음)
 tagInput.addEventListener('keydown', function (e) {
   if (e.key === 'Enter') {
     e.preventDefault();
-
     const val = tagInput.value.trim();
     if (!val) return;
-
-    // 태그 개수 제한
     if (tagList.querySelectorAll('.tag-chip').length >= 5) {
       alert('태그는 최대 5개까지 입력할 수 있습니다.');
       tagInput.value = '';
       return;
     }
-
+    if ([...tagList.children].some((chip) => chip.dataset.tag === val)) {
+      alert('이미 추가한 태그입니다.');
+      tagInput.value = '';
+      return;
+    }
     const chip = document.createElement('div');
     chip.className = 'tag-chip';
     chip.textContent = '#' + val;
-
+    chip.dataset.tag = val;
     const delBtn = document.createElement('span');
     delBtn.className = 'del';
     delBtn.textContent = '×';
-    delBtn.onclick = () => chip.remove();
-
+    delBtn.onclick = () => {
+      chip.remove();
+      updateHiddenTags();
+    };
     chip.appendChild(delBtn);
     tagList.appendChild(chip);
-
     tagInput.value = '';
+    updateHiddenTags();
   }
 });
+
+// 칩 배열을 쉼표 문자열로 변환
+function updateHiddenTags() {
+  const tags = [...tagList.querySelectorAll('.tag-chip')].map(
+    (chip) => chip.dataset.tag,
+  );
+  hiddenTags.value = tags.join(',');
+}
 
 // catInput에서 Enter로 폼 제출 막기
 catInput.addEventListener('keydown', function (e) {

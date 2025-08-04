@@ -121,6 +121,7 @@ select {
   background: #fff;
   border: 1px solid #e0e7ef;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.14);
+  overflow-y: auto;
 }
 
 .cat-del-item {
@@ -141,6 +142,66 @@ select {
 
 .cat-del-item:hover {
   background: #f3f4f6;
+}
+
+.cat-pw-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0.6em 1.2em;
+  border-radius: 8px;
+  border: 1.5px solid #dbeafe;
+}
+
+.cat-pw-input {
+  flex: 1;
+  padding: 0.5em 1em;
+  border: 1.5px solid #60a5fa;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  background: #fff;
+  outline: none;
+  transition: border 0.18s;
+}
+
+.cat-pw-input.cat-pw-error {
+  border: 1.5px solid #f87171;
+  background: #fdf2f2;
+  animation: shake 0.14s 2;
+}
+
+.cat-pw-btn {
+  padding: 0.45em 1.15em;
+  font-size: 0.8rem;
+  border: none;
+  background: #2563eb;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);
+  transition: background 0.14s;
+}
+.cat-pw-btn:hover {
+  background: #1d4ed8;
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-3px);
+  }
+  50% {
+    transform: translateX(3px);
+  }
+  75% {
+    transform: translateX(-2px);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }
 
 /* 태그 리스트 */

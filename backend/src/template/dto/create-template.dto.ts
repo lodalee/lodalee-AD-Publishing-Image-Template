@@ -3,5 +3,5 @@ export class CreateTemplateDto {
   readonly content?: string;
   readonly category: string;
   readonly imageUrl: string;
-  readonly tags?: string[];
+  readonly tags?: string;
 }
