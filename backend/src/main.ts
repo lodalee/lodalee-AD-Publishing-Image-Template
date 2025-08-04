@@ -15,7 +15,7 @@ async function bootstrap() {
   await app.listen(port, '0.0.0.0');
   app.enableCors({
     origin: true,
-    Credential: true,
+    // Credentials: true,
   });
   console.log(`서버가 ${port} 포트에서 실행 중입니다. 현재 mode => (${mode})`);
 }

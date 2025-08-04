@@ -12,9 +12,9 @@ import { join } from 'path';
 @Module({
   imports: [
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'public'), // public 폴더 기준
-      serveRoot: '/', // 루트에서 제공
-      exclude: ['/'], // index.html 만 컨트롤러에서, 나머지는 자동 제공
+      rootPath: join(__dirname, '..', 'public'),
+      serveRoot: '/',
+      exclude: ['/api*'],
     }),
     ConfigModule.forRoot(),
     MongooseModule.forRootAsync({

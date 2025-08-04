@@ -46,7 +46,7 @@ h2 {
   background: #dbeafe;
 }
 
-input[type="text"],
+input[type='text'],
 select,
 textarea {
   border: 1px solid #d1d5db;
@@ -65,7 +65,7 @@ select {
 }
 
 /* 카테고리 추가 input */
-#catInputBox input[type="text"] {
+#catInputBox input[type='text'] {
   font-size: 1rem;
   border-radius: 0.6vw;
   padding: 0.45vw 0.9vw;
@@ -188,7 +188,9 @@ select {
   font-size: 28px;
   color: #a1a1aa;
   cursor: pointer;
-  transition: border-color 0.18s, color 0.15s;
+  transition:
+    border-color 0.18s,
+    color 0.15s;
 }
 .img-upload:hover {
   border-color: #60a5fa;
@@ -212,7 +214,7 @@ select {
 }
 
 /* 제출 버튼 */
-button[type="submit"] {
+button[type='submit'] {
   margin-top: 1vw;
   width: 100%;
   padding: 0.7vw 0;
@@ -226,7 +228,7 @@ button[type="submit"] {
   cursor: pointer;
   transition: background 0.18s;
 }
-button[type="submit"]:hover {
+button[type='submit']:hover {
   background: #2563eb;
 }
 #result {
@@ -250,7 +252,9 @@ button[type="submit"]:hover {
   font-weight: 500;
   padding: 4px 14px;
   border-radius: 8px 8px 0 0;
-  transition: background 0.2s, color 0.2s;
+  transition:
+    background 0.2s,
+    color 0.2s;
 }
 .nav a.active,
 .nav a:hover {

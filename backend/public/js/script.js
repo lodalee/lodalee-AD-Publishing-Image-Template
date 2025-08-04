@@ -1,11 +1,32 @@
-
 // 1. 초기값 불러오기(localStorage → 기본값)
-let categoryList = JSON.parse(localStorage.getItem('categoryList')) || ['nav', 'footer', 'slide'];
+let categoryList = JSON.parse(localStorage.getItem('categoryList')) || [
+  '관심 고객 등록',
+  '기획',
+  '동영상',
+  '풀영상',
+  '메인 페이지',
+  '섹션 전환 표지',
+  '스크롤',
+  '슬라이드섹션-1개',
+  '슬라이드섹션-걸치기',
+  '슬라이드섹션-카드형',
+  '유니트',
+  '유니트-강조',
+  '유니트-카드형',
+  '인트로',
+  '카드섹션',
+  '카드섹션-왜가리',
+  '카드섹션-이미지 카드',
+  '텍스트 카드 섹션',
+  '팝업',
+  '푸터',
+  '현장&모델하우스위치',
+];
 
 function renderCategoryOptions() {
   const select = document.getElementById('categorySelect');
   select.innerHTML = '<option value="">카테고리 선택</option>';
-  categoryList.forEach(cat => {
+  categoryList.forEach((cat) => {
     const opt = document.createElement('option');
     opt.value = cat;
     opt.textContent = cat;
@@ -23,7 +44,7 @@ const categorySelect = document.getElementById('categorySelect');
 
 // === [1] "카테고리 추가" 버튼 클릭시 input박스 show
 catAddBtn.onclick = () => {
-  catInputBox.style.display = "flex"; 
+  catInputBox.style.display = 'flex';
   catInput.focus();
 };
 
@@ -38,33 +59,32 @@ catInputOk.onclick = () => {
     categorySelect.value = val;
   }
   catInput.value = '';
-  catInputBox.style.display = "none";
+  catInputBox.style.display = 'none';
 };
 
 // 카테고리 삭제
 catDelBtn.onclick = () => {
-  if (catDeleteList.style.display === "block") {
-    catDeleteList.style.display = "none";
+  if (catDeleteList.style.display === 'block') {
+    catDeleteList.style.display = 'none';
     return;
   }
-  catDeleteList.innerHTML = "";
-  categoryList.forEach(cat => {
+  catDeleteList.innerHTML = '';
+  categoryList.forEach((cat) => {
     const item = document.createElement('div');
-    item.className = "cat-del-item";
+    item.className = 'cat-del-item';
     item.textContent = cat;
     item.onclick = () => {
       // ★ 삭제/저장
-      categoryList = categoryList.filter(c => c !== cat);
+      categoryList = categoryList.filter((c) => c !== cat);
       localStorage.setItem('categoryList', JSON.stringify(categoryList)); // 추가/저장
       renderCategoryOptions();
-      catDeleteList.style.display = "none";
+      catDeleteList.style.display = 'none';
       if (categorySelect.value === cat) categorySelect.value = '';
     };
     catDeleteList.appendChild(item);
   });
-  catDeleteList.style.display = "block";
+  catDeleteList.style.display = 'block';
 };
-
 
 const imgBox = document.getElementById('imgBox');
 const imgInput = imgBox.querySelector('input[type="file"]');
@@ -76,26 +96,25 @@ imgBox.addEventListener('click', () => {
 });
 
 // 파일 선택시 미리보기
-imgInput.addEventListener('change', function() {
+imgInput.addEventListener('change', function () {
   const file = this.files[0];
   if (!file) return;
-  
+
   const reader = new FileReader();
-  reader.onload = e => {
+  reader.onload = (e) => {
     imgPreview.innerHTML = '';
     const img = document.createElement('img');
     img.src = e.target.result;
     imgPreview.appendChild(img);
-  }
+  };
   reader.readAsDataURL(file);
 });
-
 
 // 태그등록
 const tagInput = document.getElementById('tagInput');
 const tagList = document.getElementById('tagList');
 
-tagInput.addEventListener('keydown', function(e) {
+tagInput.addEventListener('keydown', function (e) {
   if (e.key === 'Enter') {
     e.preventDefault();
 
@@ -126,7 +145,7 @@ tagInput.addEventListener('keydown', function(e) {
 });
 
 // catInput에서 Enter로 폼 제출 막기
-catInput.addEventListener('keydown', function(e) {
+catInput.addEventListener('keydown', function (e) {
   if (e.key === 'Enter') {
     e.preventDefault(); // 🚫 새로고침 차단
   }
