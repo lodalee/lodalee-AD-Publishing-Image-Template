@@ -13,6 +13,10 @@ async function bootstrap() {
 
   //모든 네트워크 인터페이스(모든 IP주소)에서 접속 가능
   await app.listen(port, '0.0.0.0');
+  app.enableCors({
+    origin: true,
+    Credential: true,
+  });
   console.log(`서버가 ${port} 포트에서 실행 중입니다. 현재 mode => (${mode})`);
 }
 bootstrap();
