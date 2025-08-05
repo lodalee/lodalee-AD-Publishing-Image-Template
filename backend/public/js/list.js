@@ -22,9 +22,9 @@ window.addEventListener('DOMContentLoaded', async () => {
           <ul>
             ${group.items
               .map(
-                (item) => `
-                <li class="img-card">
-                  <img src="${item.imageUrl}" alt="">
+                (item, idx) => `
+                <li class="img-card" data-index="${group.category}-${idx}">
+                  <img src="${item.imageUrl}" alt="" draggable="true">
                   <div class="img-overlay">
                     <h4>${item.title || ''}</h4>
                     <p>${item.content || ''}</p>
@@ -40,9 +40,10 @@ window.addEventListener('DOMContentLoaded', async () => {
                     }
                   </div>
                 </li>
-            `,
+              `,
               )
               .join('')}
+
           </ul>
         </section>
       `;

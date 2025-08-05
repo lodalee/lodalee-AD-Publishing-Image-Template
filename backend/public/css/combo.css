@@ -1,0 +1,232 @@
+/* =============================== */
+/* === [조합(중앙) & 미리보기(우측)] */
+/* =============================== */
+
+.main-workspace {
+  display: flex;
+  align-items: center; /* 수직 중앙! */
+  justify-content: center; /* 수평 중앙! */
+  gap: 2vw; /* 박스 사이 여백, 비율 단위로 더 자연스럽게 */
+  height: 92vh;
+  width: 100vw;
+  padding: 0 3vw; /* 좌우 여백 동일하게 */
+  box-sizing: border-box;
+  margin-top: 0.5%;
+}
+
+.combo-container,
+.preview-container {
+  flex: 3 1 0;
+  height: 90vh;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px #dde3f6;
+  background: #fff;
+  padding: 2.5em 3vw;
+  box-sizing: border-box;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.combo-container::-webkit-scrollbar,
+.preview-container::-webkit-scrollbar {
+  display: none;
+}
+
+#mergeBtn {
+  background: #60a5fa;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 24px;
+  font-size: 1.1em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s;
+  margin-top: 16px;
+  align-self: center; /* 가로 중앙 */
+  display: block;
+  margin: 16px auto 0 auto;
+}
+
+#mergeBtn:hover {
+  background: #357ae8;
+}
+
+.combo-list {
+  min-height: 340px;
+  background: #f0f4fa;
+  border-radius: 12px;
+  border: 2px dashed #bfd5f6;
+  margin: 12px 0 18px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 20px 10px;
+  transition: border-color 0.2s;
+}
+
+.combo-list.drag-over {
+  border-color: #60a5fa;
+  background: #e8f0ff;
+}
+
+.preview-container {
+  background: #f9f9fb;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 20px;
+}
+
+#previewCanvas {
+  background: #fafbfc;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px #eee;
+  display: block;
+  margin-bottom: 12px;
+  width: 380px;
+  height: 380px;
+  max-width: 100%;
+}
+
+#downloadBtn {
+  background: #60a5fa;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 24px;
+  font-size: 1.1em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s;
+  margin-top: 10px;
+}
+#downloadBtn:hover {
+  background: #357ae8;
+}
+
+.combo-list {
+  min-height: 340px;
+  background: #f0f4fa;
+  border-radius: 12px;
+  border: 2px dashed #bfd5f6;
+  margin: 12px 0 18px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.combo-item:active {
+  opacity: 0.8;
+  transform: scale(1.05); /* 드래그 시작 시 살짝 확대 */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.combo-item img {
+  max-width: 100%;
+}
+.combo-img-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.combo-remove {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-size: 15px;
+  font-weight: bold;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+  line-height: 1;
+  user-select: none; /* 드래그 방지 */
+  text-shadow:
+    -1px -1px 0 #000000,
+    1px -1px 0 #000000,
+    -1px 1px 0 #000000,
+    1px 1px 0 #000000;
+
+  padding: 20px; /* 실제 클릭할 수 있는 영역 넓힘 */
+  margin: -20px; /* padding으로 밀린 위치를 다시 보정 */
+  background: transparent;
+}
+
+.combo-remove:hover {
+  color: #ff4343ff;
+  transform: scale(1.2);
+}
+
+.combo-img-wrapper img {
+  max-width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  display: block;
+}
+
+.combo-category {
+  position: absolute;
+  bottom: 8px; /* 하단 */
+  right: 8px; /* 오른쪽 */
+  background: rgba(0, 0, 0, 0.6);
+  color: #ffffff;
+  font-size: 1em;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.combo-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  gap: 12px;
+}
+
+.combo-header h2 {
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.combo-header .tooltip {
+  flex-shrink: 0;
+}
+
+.combo-count {
+  margin-left: auto; /* 오른쪽 끝으로 밀기 */
+  font-size: 1em;
+  font-weight: bold;
+  color: #000000;
+}
+.tooltip {
+  position: relative;
+  cursor: pointer;
+  font-size: 1.2em;
+}
+
+.tooltip-text {
+  visibility: hidden;
+  opacity: 0;
+  width: max-content;
+  max-width: 250px;
+  background: #333;
+  color: #fff;
+  text-align: left;
+  border-radius: 8px;
+  padding: 8px 12px;
+  position: absolute;
+  z-index: 10;
+  top: 50%; /* 세로 가운데 */
+  left: 120%; /* 아이콘 오른쪽 */
+  transform: translateY(-50%); /* 세로 가운데 정렬 */
+  transition: opacity 0.2s;
+  font-size: 0.9em;
+  line-height: 1.4;
+}
+
+.tooltip:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}

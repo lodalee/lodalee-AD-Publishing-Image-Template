@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <title>템플릿 목록</title>
     <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="stylesheet" href="/css/combo.css" />
   </head>
   <body>
     <nav class="nav">
@@ -20,10 +21,20 @@
       </div>
       <!-- 2. 조합 공간 -->
       <div class="combo-container">
-        <h2>조합 영역</h2>
-        <div id="comboList" class="combo-list">
-          <p>여기로 이미지를 끌어다 놓으세요</p>
+        <div class="combo-header">
+          <h2>조합 영역</h2>
+          <div class="tooltip">
+            ℹ️
+            <span class="tooltip-text">
+              1. 템플릿 이미지 클릭<br />
+              2. 드래그하여 순서 변경
+            </span>
+          </div>
+          <span id="comboCount" class="combo-count">0개 선택</span>
         </div>
+
+        <div id="comboList" class="combo-list"></div>
+
         <button id="mergeBtn" type="button" style="margin-top: 16px">
           합성
         </button>
@@ -47,6 +58,6 @@
       </div>
     </div>
     <script src="/js/list.js"></script>
-    <!-- 여기서 combo.js, preview.js 등 추가로 분리하면 더 좋아! -->
+    <script src="/js/combo.js"></script>
   </body>
 </html>
