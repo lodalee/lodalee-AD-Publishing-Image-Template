@@ -6,6 +6,12 @@ import { join } from 'path';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
+  @Get('/')
+  redirectToIndex(@Res() res): void {
+    const filePath = join(__dirname, '..', 'public', 'pages', 'index.html');
+    res.sendFile(filePath);
+  }
+
   @Get('/index.html')
   getIndex(@Res() res): void {
     const filePath = join(__dirname, '..', 'public', 'pages', 'index.html');

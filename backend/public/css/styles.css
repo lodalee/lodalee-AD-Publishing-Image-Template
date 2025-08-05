@@ -1,9 +1,13 @@
 /* ===================== */
 /* === [공통 전체] ====== */
 /* ===================== */
+html,
 body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden; /* 전체 스크롤 막기! */
   background: #f8fafc;
-  font-family: "Segoe UI", sans-serif;
+  font-family: 'Segoe UI', sans-serif;
   margin: 0;
   padding: 0;
   min-height: 100vh;
@@ -32,10 +36,203 @@ body {
   font-weight: 500;
   padding: 4px 14px;
   border-radius: 8px 8px 0 0;
-  transition: background 0.2s, color 0.2s;
+  transition:
+    background 0.2s,
+    color 0.2s;
 }
 .nav a.active,
 .nav a:hover {
   background: #60a5fa;
   color: #fff;
+}
+
+/* ===================== */
+/* === [메인 레이아웃] == */
+/* ===================== */
+.main-layout {
+  display: flex;
+  min-height: calc(100vh - 55px); /* 네비 높이만큼 뺀 값 */
+  align-items: center; /* 세로 가운데! */
+  justify-content: flex-start; /* 왼쪽 정렬 */
+}
+
+/* ===================== */
+/* === [템플릿 박스] ===== */
+/* ===================== */
+.template-container {
+  flex: 4 1 0; /* 비율만 4 */
+  width: 80vw;
+  max-width: 1100px;
+  min-width: 350px;
+  margin-left: 2%;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px #dde3f6;
+  background: #fff;
+  padding: 2.5em 3vw;
+  box-sizing: border-box;
+  height: 90vh;
+  overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+.template-container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/* ===================== */
+/* === [카테고리별 섹션] */
+/* ===================== */
+.category-section {
+  margin-bottom: 2em;
+}
+.category-section h3 {
+  margin-top: 1em;
+  margin-bottom: 0.7em;
+  color: #007bff;
+  font-size: 1.12em;
+}
+.category-section ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex; /* 가로 정렬 */
+  gap: 16px; /* 사진 간격 */
+  overflow-x: auto; /* 슬라이드 느낌 */
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 #f1f5f9;
+  scroll-behavior: smooth;
+}
+
+.img-card {
+  position: relative;
+  overflow: hidden;
+  flex: 0 0 auto; /* 줄어들지 않음 */
+}
+
+.img-card img {
+  width: 100%;
+  height: 250px;
+  max-width: 450px;
+  object-fit: contain; /* 비율 유지, 잘리지 않고 축소 */
+  border-radius: 12px;
+  box-shadow: 0 2px 8px #e0e7ef;
+  display: block;
+  margin: 0 auto; /* 가로 중앙 정렬 */
+  background: #f8fafc; /* 여백이 생길 경우 배경색 */
+}
+
+.img-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(20, 30, 40, 0.68);
+  color: #fff;
+  opacity: 0;
+  transition: opacity 0.24s;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border-radius: 12px;
+  pointer-events: none;
+}
+
+.img-card:hover .img-overlay {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* =============================== */
+/* === [조합(중앙) & 미리보기(우측)] */
+/* =============================== */
+
+.main-workspace {
+  display: flex;
+  align-items: center; /* 수직 중앙! */
+  justify-content: center; /* 수평 중앙! */
+  gap: 2vw; /* 박스 사이 여백, 비율 단위로 더 자연스럽게 */
+  height: 92vh;
+  width: 100vw;
+  padding: 0 3vw; /* 좌우 여백 동일하게 */
+  box-sizing: border-box;
+  margin-top: 0.5%;
+}
+
+.combo-container,
+.preview-container {
+  flex: 3 1 0;
+  height: 90vh;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px #dde3f6;
+  background: #fff;
+  padding: 2.5em 3vw;
+  box-sizing: border-box;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.combo-container::-webkit-scrollbar,
+.preview-container::-webkit-scrollbar {
+  display: none;
+}
+
+.combo-list {
+  min-height: 340px;
+  background: #f0f4fa;
+  border-radius: 12px;
+  border: 2px dashed #bfd5f6;
+  margin: 12px 0 18px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 20px 10px;
+  transition: border-color 0.2s;
+}
+
+.combo-list.drag-over {
+  border-color: #60a5fa;
+  background: #e8f0ff;
+}
+
+.preview-container {
+  background: #f9f9fb;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 20px;
+}
+
+#previewCanvas {
+  background: #fafbfc;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px #eee;
+  display: block;
+  margin-bottom: 12px;
+  width: 380px;
+  height: 380px;
+  max-width: 100%;
+}
+
+#downloadBtn {
+  background: #60a5fa;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 24px;
+  font-size: 1.1em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s;
+  margin-top: 10px;
+}
+#downloadBtn:hover {
+  background: #357ae8;
 }

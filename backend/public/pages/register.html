@@ -73,9 +73,12 @@
                 id="tagInput"
                 placeholder="태그 입력 후 엔터"
                 autocomplete="off"
+                name="tagInput"
               />
               <div id="tagList" class="tag-list"></div>
             </div>
+            <!-- 숨겨진 input, 폼 제출 전 태그 배열로 값을 넣음 -->
+            <input type="hidden" name="tags" id="hiddenTags" />
           </div>
 
           <div class="row">
@@ -98,5 +101,6 @@
       </div>
     </div>
     <script src="/js/script.js"></script>
+    <script src="/js/register.js"></script>
   </body>
 </html>

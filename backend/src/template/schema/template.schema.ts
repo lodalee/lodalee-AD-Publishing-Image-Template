@@ -19,8 +19,8 @@ export class Template extends Document {
   @Prop({ required: true })
   imageUrl: string;
 
-  @Prop({ type: [String], default: [] })
-  tags: string[];
+  @Prop()
+  tags: string;
 }
 
 export const TemplateSchema = SchemaFactory.createForClass(Template);

@@ -42,20 +42,28 @@ export class TemplateService {
     return saved;
   }
 
-  findAll() {
-    return `This action returns all template`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} template`;
-  }
-
-  update(id: number, updateTemplateDto: UpdateTemplateDto) {
-    return `This action updates a #${id} template`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} template`;
+  /*=================
+  ====템플릿 조회====
+  ==================*/
+  async findAll() {
+    return this.templateModel.aggregate([
+      { $sort: { createdAt: -1 } },
+      {
+        $group: {
+          _id: '$category', // category 필드 기준 그룹핑
+          items: { $push: '$$ROOT' }, // 해당 카테고리 데이터 모두 모으기
+        },
+      },
+      { $sort: { _id: 1 } }, // 카테고리명 기준 정렬(선택)
+      {
+        $project: {
+          // 응답 형태 가독성 위해
+          _id: 0,
+          category: '$_id',
+          items: 1,
+        },
+      },
+    ]);
   }
 
   /*==================
@@ -70,4 +78,60 @@ export class TemplateService {
     const rand = Math.floor(10000 + Math.random() * 90000); // 10000~99999
     return `${baseName}_${timestamp}_${rand}${ext}`;
   }
+
+  /*==================
+  ===템플릿 자동 업로드===
+  ==================*/
+  async autoImportFromFolder(rootDir: string) {
+    const uploadDir = path.join(__dirname, '..', '..', 'uploads');
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
+
+    const categories = fs
+      .readdirSync(rootDir, { withFileTypes: true })
+      .filter((dirent) => dirent.isDirectory())
+      .map((dirent) => dirent.name);
+
+    for (const category of categories) {
+      const categoryDir = path.join(rootDir, category);
+      const files = fs.readdirSync(categoryDir);
+
+      for (const file of files) {
+        const ext = path.extname(file).toLowerCase();
+        if (!['.jpg', '.jpeg', '.png', '.gif', '.webp'].includes(ext)) continue;
+
+        const filename = `${Date.now()}-${file}`;
+        const sourcePath = path.join(categoryDir, file);
+        const destPath = path.join(uploadDir, filename);
+
+        fs.copyFileSync(sourcePath, destPath);
+
+        const imageUrl = `/uploads/${filename}`;
+
+        const created = new this.templateModel({
+          title: '디자인북 업로드',
+          content: '',
+          category: category,
+          imageUrl,
+          tags: '자체제작',
+        });
+
+        await created.save();
+      }
+    }
+    return { message: '자동 업로드 완료' };
+  }
 }
+
+// findOne(id: number) {
+//   return `This action returns a #${id} template`;
+// }
+
+// update(id: number, updateTemplateDto: UpdateTemplateDto) {
+//   return `This action updates a #${id} template`;
+// }
+
+// remove(id: number) {
+//   return `This action removes a #${id} template`;
+// }
