@@ -1,8 +1,13 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import * as express from 'express';
+import { join } from 'path';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  // 정적 파일 직접 라우팅
+  app.use('/uploads', express.static(join(__dirname, '..', 'uploads')));
 
   //서버 모드에 따라 port번호 변경
   const mode = process.env.MODE;

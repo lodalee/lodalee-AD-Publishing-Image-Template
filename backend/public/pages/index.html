@@ -10,13 +10,43 @@
       <a href="index.html" class="active">📂 템플릿 목록</a>
       <a href="register.html">📝 템플릿 등록</a>
     </nav>
-    <div class="template-container">
-      <h2>템플릿 목록</h2>
-
-      <div id="templateList">
-        <p>아직 구현 전이거나, 등록된 템플릿이 없습니다.</p>
+    <div class="main-workspace">
+      <!-- 1. 기존 템플릿 목록 -->
+      <div class="template-container">
+        <h2>템플릿 목록</h2>
+        <div id="templateList">
+          <p>아직 구현 전이거나, 등록된 템플릿이 없습니다.</p>
+        </div>
+      </div>
+      <!-- 2. 조합 공간 -->
+      <div class="combo-container">
+        <h2>조합 영역</h2>
+        <div id="comboList" class="combo-list">
+          <p>여기로 이미지를 끌어다 놓으세요</p>
+        </div>
+        <button id="mergeBtn" type="button" style="margin-top: 16px">
+          합성
+        </button>
+      </div>
+      <!-- 3. 미리보기/다운로드 -->
+      <div class="preview-container">
+        <h2>미리보기</h2>
+        <canvas
+          id="previewCanvas"
+          width="800"
+          height="400"
+          style="
+            background: #fafbfc;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px #eee;
+            display: block;
+            margin-bottom: 12px;
+          "
+        ></canvas>
+        <button id="downloadBtn" type="button">다운로드</button>
       </div>
     </div>
-    <!-- <script src="list.js"></script> -->
+    <script src="/js/list.js"></script>
+    <!-- 여기서 combo.js, preview.js 등 추가로 분리하면 더 좋아! -->
   </body>
 </html>

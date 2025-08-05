@@ -8,11 +8,15 @@ document
     try {
       const res = await fetch('/api/template', {
         method: 'POST',
-        body: formData, // Content-Type 자동 세팅됨
+        body: formData,
       });
-      // const json = await res.json();
-      // document.getElementById('result').innerText =
-      //   '서버 응답: ' + JSON.stringify(json);
+      if (res.ok) {
+        // 등록 성공 시 새로고침!
+        window.location.reload();
+      } else {
+        const err = await res.text();
+        document.getElementById('result').innerText = '서버 에러: ' + err;
+      }
     } catch (err) {
       document.getElementById('result').innerText = '에러: ' + err;
     }
