@@ -11,7 +11,7 @@ window.addEventListener('DOMContentLoaded', async () => {
       return;
     }
 
-    // 원하는 순서로 정렬
+    // 원하는 순서 정렬
     const categoryOrder = [
       '인트로',
       '메인 페이지',
@@ -43,40 +43,73 @@ window.addEventListener('DOMContentLoaded', async () => {
     });
 
     let html = '';
-    data.forEach((group) => {
+    data.forEach((group, gIdx) => {
       html += `
-        <section class="category-section">
-          <h3>${group.category}</h3>
-          <ul>
-            ${group.items
-              .map(
-                (item, idx) => `
-                <li class="img-card" data-index="${group.category}-${idx}">
-                  <img src="${item.imageUrl}" alt="" draggable="true">
-                  <div class="img-overlay">
-                    <h4>${item.title || ''}</h4>
-                    <p>${item.content || ''}</p>
-                    ${
-                      item.tags && item.tags.trim()
-                        ? `<div class="tags">${item.tags
-                            .split(',')
-                            .map(
-                              (tag) => `<span class="tag">${tag.trim()}</span>`,
-                            )
-                            .join('')}</div>`
-                        : ''
-                    }
+                <section class="category-section">
+                  <div class="category-header">
+                    <h3>${group.category}</h3>
+                    <div class="scroll-buttons">
+                      <button class="btn-prev" data-section="${gIdx}">←</button>
+                      <button class="btn-next" data-section="${gIdx}">→</button>
+                    </div>
                   </div>
-                </li>
-              `,
-              )
-              .join('')}
-          </ul>
-        </section>
-      `;
+                  <div class="category-body">
+                    <ul id="category-${gIdx}">
+                      ${group.items
+                        .map(
+                          (item, idx) => `
+                        <li class="img-card" data-index="${group.category}-${idx}" draggable="true">
+                          <img src="${item.imageUrl}" alt="">
+                          <div class="img-overlay">
+                            <h4>${item.title || ''}</h4>
+                            <p>${item.content || ''}</p>
+                            ${
+                              item.tags && item.tags.trim()
+                                ? `<div class="tags">${item.tags
+                                    .split(',')
+                                    .map(
+                                      (tag) =>
+                                        `<span class="tag">${tag.trim()}</span>`,
+                                    )
+                                    .join('')}</div>`
+                                : ''
+                            }
+                          </div>
+                        </li>`,
+                        )
+                        .join('')}
+                    </ul>
+                  </div>
+                </section>
+              `;
     });
 
     container.innerHTML = html;
+
+    // 버튼 동작 추가 (li 단위로 이동)
+    document.querySelectorAll('.category-section').forEach((section) => {
+      const ul = section.querySelector('ul');
+      const items = ul.querySelectorAll('li');
+      let currentIndex = 0;
+
+      section.querySelector('.btn-prev').addEventListener('click', () => {
+        currentIndex = Math.max(0, currentIndex - 1);
+        items[currentIndex].scrollIntoView({
+          behavior: 'smooth',
+          inline: 'start',
+          block: 'nearest',
+        });
+      });
+
+      section.querySelector('.btn-next').addEventListener('click', () => {
+        currentIndex = Math.min(items.length - 1, currentIndex + 1);
+        items[currentIndex].scrollIntoView({
+          behavior: 'smooth',
+          inline: 'start',
+          block: 'nearest',
+        });
+      });
+    });
   } catch (e) {
     container.innerHTML = '<p>에러가 발생했습니다.</p>';
   }
