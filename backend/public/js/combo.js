@@ -83,3 +83,60 @@ function updateCount() {
     comboCount.style.color = '#222222ff';
   }
 }
+
+//조합
+document.getElementById("mergeBtn").addEventListener("click", async () => {
+  const comboList = document.getElementById("comboList");
+  const canvas = document.getElementById("previewCanvas");
+  const ctx = canvas.getContext("2d");
+
+  const images = comboList.querySelectorAll("img");
+
+  if (images.length === 0) {
+    alert("선택된 이미지가 없습니다.");
+    return;
+  }
+
+  // 첫 이미지 기준 사이즈
+  const firstImg = images[0];
+  const imgWidth = firstImg.naturalWidth || 200;
+  const imgHeight = firstImg.naturalHeight || 200;
+
+  // 👉 세로 방향으로 병합: canvas 높이 = 이미지 높이 * 이미지 수
+  canvas.width = imgWidth;
+  canvas.height = imgHeight * images.length;
+
+  // 캔버스 초기화
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // 이미지를 위에서 아래로 하나씩 그림
+  for (let i = 0; i < images.length; i++) {
+    const img = await loadImage(images[i].src);
+    ctx.drawImage(img, 0, i * imgHeight, imgWidth, imgHeight);
+  }
+});
+
+// 이미지 로드 보장 함수
+function loadImage(src) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.crossOrigin = "anonymous"; // CORS 문제 방지
+    img.onload = () => resolve(img);
+    img.onerror = reject;
+    img.src = src;
+  });
+}
+
+document.getElementById('downloadBtn').addEventListener('click', () => {
+const canvas = document.getElementById("previewCanvas");
+
+// WebP 포맷으로 이미지 데이터 생성
+const imageData = canvas.toDataURL("image/webp");
+
+// 다운로드 링크 생성
+const link = document.createElement("a");
+link.href = imageData;
+link.download = "my-photo.webp"; // 저장될 파일명
+link.click(); // 다운로드 실행
+
+});

@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { CreateTemplateDto } from './dto/create-template.dto';
-import { UpdateTemplateDto } from './dto/update-template.dto';
 import path from 'path';
 import * as fs from 'fs';
 import { InjectModel } from '@nestjs/mongoose';
@@ -66,6 +65,24 @@ export class TemplateService {
     ]);
   }
 
+  /*=================
+  ====템플릿 검색====
+  ==================*/
+  async search(tag: string) {
+    const allTemplates = await this.templateModel.find().exec();
+
+    const filtered = allTemplates.filter(template => {
+      const tagsArray = template.tags.replace(/[{}]/g, '').split(',');
+      return tagsArray.includes(tag);
+    });
+
+    if (filtered.length === 0) {
+      return { message: `해당하는 검색 결과가 없습니다.` };
+    }
+
+    return filtered;
+  }
+  
   /*==================
   ===유틸리티 함수===
   ==================*/

@@ -5,6 +5,7 @@ import {
   Body,
   UseInterceptors,
   UploadedFile,
+  Query,
 } from '@nestjs/common';
 import { TemplateService } from './template.service';
 import { CreateTemplateDto } from './dto/create-template.dto';
@@ -24,7 +25,10 @@ export class TemplateController {
   }
 
   @Get()
-  findAll() {
+  findAll(@Query('search') search?: string) {
+    if (search) {
+      return this.templateService.search(search);
+    }
     return this.templateService.findAll();
   }
 
@@ -32,6 +36,8 @@ export class TemplateController {
   async autoUpload(@Body('rootDir') rootDir: string) {
     return this.templateService.autoImportFromFolder(rootDir);
   }
+
+
 
   // @Get(':id')
   // findOne(@Param('id') id: string) {

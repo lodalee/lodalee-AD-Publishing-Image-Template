@@ -82,14 +82,13 @@
 }
 
 #previewCanvas {
+  width: 100%; /* 또는 max-width: 100% 유지 */
+  height: auto; /* 높이는 자동 */
   background: #fafbfc;
   border-radius: 12px;
   box-shadow: 0 2px 8px #eee;
   display: block;
   margin-bottom: 12px;
-  width: 380px;
-  height: 380px;
-  max-width: 100%;
 }
 
 #downloadBtn {
