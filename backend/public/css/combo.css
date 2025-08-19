@@ -15,7 +15,7 @@
 }
 
 .combo-container,
-.preview-container {
+.candidate-container {
   flex: 3 1 0;
   height: 90vh;
   border-radius: 16px;
@@ -29,7 +29,7 @@
 }
 
 .combo-container::-webkit-scrollbar,
-.preview-container::-webkit-scrollbar {
+.candidate-container::-webkit-scrollbar {
   display: none;
 }
 
@@ -72,26 +72,69 @@
   background: #e8f0ff;
 }
 
-.preview-container {
-  background: #f9f9fb;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 20px;
+/* 카테고리 그룹(제목 + 박스) */
+.candidate-group {
+  width: 100%;
+  margin: 20px 0 26px;
 }
 
-#previewCanvas {
-  width: 100%; /* 또는 max-width: 100% 유지 */
-  height: auto; /* 높이는 자동 */
-  background: #fafbfc;
+/* 카테고리 제목: 박스 밖(위) */
+.candidate-title {
+  margin: 0 0 10px 4px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #2d4b8e;
+}
+
+/* 후보 박스: 가로 스크롤, 한 줄 갤러리 */
+.candidate-box {
+  background: #f0f4fa;
   border-radius: 12px;
-  box-shadow: 0 2px 8px #eee;
-  display: block;
-  margin-bottom: 12px;
+  border: 2px dashed #bfd5f6;
+  padding: 16px;
+  overflow-y: hidden;
+  overflow-x: hidden;          
+  box-sizing: border-box;
+  transition: background 0.2s, border-color 0.2s;
 }
 
-#downloadBtn {
+.candidate-box:hover {
+  background: #e8f0ff;
+  border-color: #60a5fa;
+}
+
+/* 가로 갤러리 트랙 */
+.candidate-images {
+  display: grid !important;                 
+  grid-template-columns: repeat(3, 1fr);                                    
+  align-items: start;
+  justify-items: center;
+  min-width: auto;                          
+}
+
+
+/* 큰 썸네일 */
+.candidate-thumb {
+  width: 160px;
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #d8e4f9;
+  background: #fff;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s, border-color 0.2s;
+  flex: 0 0 auto;   
+  gap: auto;           
+}
+
+.candidate-thumb:hover {
+  transform: scale(1.05);
+  border-color: #94b8f7;
+}
+
+
+/* #downloadBtn {
   background: #60a5fa;
   color: #fff;
   border: none;
@@ -105,7 +148,7 @@
 }
 #downloadBtn:hover {
   background: #357ae8;
-}
+} */
 
 .combo-list {
   min-height: 340px;

@@ -20,12 +20,16 @@
           <p>아직 구현 전이거나, 등록된 템플릿이 없습니다.</p>
         </div>
       </div>
-      <!-- 2. 조합 공간 -->
+      <!-- 2. 후보 이미지 -->
+      <div class="candidate-container">
+        <h2>후보 목록</h2>
+        <div id="candidateList"></div>
+      </div>
+      <!-- 3. 조합 공간 -->
       <div class="combo-container">
         <div class="combo-header">
           <h2>조합 영역</h2>
-          <div class="tooltip">
-            ℹ️
+          <div class="tooltip">ℹ️
             <span class="tooltip-text">
               1. 템플릿 이미지 클릭<br />
               2. 드래그하여 순서 변경
@@ -41,7 +45,7 @@
         </button>
       </div>
       <!-- 3. 미리보기/다운로드 -->
-      <div class="preview-container">
+      <!-- <div class="preview-container">
         <h2>미리보기</h2>
         <canvas
           id="previewCanvas"
@@ -56,7 +60,7 @@
           "
         ></canvas>
         <button id="downloadBtn" type="button">다운로드</button>
-      </div>
+      </div> -->
     </div>
     <script src="/js/list.js"></script>
     <script src="/js/combo.js"></script>
