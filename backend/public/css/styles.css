@@ -22,6 +22,16 @@ ul, li {
   list-style: none;
 }
 
+:root {
+    --color-main1: #007bff;
+    --color-main2: #c79360;
+    --color-main3: #8f8976;
+    --color-main4: #ff0b9c;
+    --color-yellow: #ffde00;
+  	--number: "1666-5721"
+}
+
+
 #wrap {
   display:flex;
 }
@@ -47,7 +57,7 @@ ul, li {
 }
 
 .gnb .logo {
-  width:140px;
+  width:100px;
 }
 
 .gnb .logo img {
@@ -67,7 +77,8 @@ ul, li {
 }
 
 .side-bar li{
-  padding: 20px 10px;
+  padding: 20px 0px 20px 10px;
+  cursor: wait;
 }
 
 .side-bar li.active{
@@ -76,32 +87,68 @@ ul, li {
   border-bottom-left-radius: 10px;
   font-weight: 700;
   color: #007bff;
+  cursor:pointer;
+}
+
+.side-bar li span {
+  background:#c6cfd7;
+  border-radius: 6px;
+  padding:2px 6px 4px;
+  margin-left:10px;
+  font-size: 12px;
+  color: #8d8d8d;
+  font-weight: 500;
 }
 
 
+/* ===================== */
+/* === [템플릿 리스트 네비게이션] ===== */
+/* ===================== */
+.template-list {
+  width:33%;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px #dde3f6;
+  background: #fff;
+  padding: 2.5em 3vw;
+  box-sizing: border-box;
+  height: 90vh;
+  overflow-y: auto;
+    scrollbar-width: none;
+}
 
-/* ===================== */
-/* === [네비게이션] ===== */
-/* ===================== */
-.nav {
+.template-list .nav {
   background: #fff;
   display: flex;
+  justify-content: space-between;
   gap: 20px;
-  padding: 18px 40px 8px 40px;
+  padding-bottom:40px;
 }
-.nav a {
-  color: #334155;
+
+.template-list .nav input {
+  width:80%;
+  background: #f5f5f5;
+  border-radius: 100px;
+  border: 0;
+  padding: 0 20px;
+}
+
+.template-list .nav a {
   text-decoration: none;
   font-size: 17px;
   font-weight: 500;
-  padding: 4px 14px;
-  border-radius: 8px 8px 0 0;
-  transition:
-    background 0.2s,
-    color 0.2s;
+  transition: background 0.2s, color 0.2s;
+  background: var(--color-main1);
+  color: #fff;
+  border-radius: 100px;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-.nav a.active,
-.nav a:hover {
+
+.template-list .nav a.active,
+.template-list .nav a:hover {
   background: #60a5fa;
   color: #fff;
 }
@@ -119,19 +166,6 @@ ul, li {
 /* ===================== */
 /* === [템플릿 박스] ===== */
 /* ===================== */
-
-/* 템플릿 목록 랩 */
-.main-wrap {
-  width:33%;
-  border-radius: 16px;
-  box-shadow: 0 2px 8px #dde3f6;
-  background: #fff;
-  padding: 2.5em 3vw;
-  box-sizing: border-box;
-  height: 90vh;
-}
-
-
 .template-container {
   flex: 4 1 0; /* 비율만 4 */
   max-width: 1100px;
