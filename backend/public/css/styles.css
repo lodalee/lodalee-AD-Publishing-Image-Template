@@ -144,95 +144,47 @@ body {
 
 .img-card:hover .img-overlay {
   opacity: 1;
-  pointer-events: auto;
 }
 
-/* =============================== */
-/* === [조합(중앙) & 미리보기(우측)] */
-/* =============================== */
+.category-section {
+  position: relative;
+}
 
-.main-workspace {
+.category-header {
   display: flex;
-  align-items: center; /* 수직 중앙! */
-  justify-content: center; /* 수평 중앙! */
-  gap: 2vw; /* 박스 사이 여백, 비율 단위로 더 자연스럽게 */
-  height: 92vh;
-  width: 100vw;
-  padding: 0 3vw; /* 좌우 여백 동일하게 */
-  box-sizing: border-box;
-  margin-top: 0.5%;
-}
-
-.combo-container,
-.preview-container {
-  flex: 3 1 0;
-  height: 90vh;
-  border-radius: 16px;
-  box-shadow: 0 2px 8px #dde3f6;
-  background: #fff;
-  padding: 2.5em 3vw;
-  box-sizing: border-box;
-  overflow-y: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.combo-container::-webkit-scrollbar,
-.preview-container::-webkit-scrollbar {
-  display: none;
-}
-
-.combo-list {
-  min-height: 340px;
-  background: #f0f4fa;
-  border-radius: 12px;
-  border: 2px dashed #bfd5f6;
-  margin: 12px 0 18px 0;
-  display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  justify-content: flex-start;
-  padding: 20px 10px;
-  transition: border-color 0.2s;
 }
 
-.combo-list.drag-over {
-  border-color: #60a5fa;
-  background: #e8f0ff;
-}
-
-.preview-container {
-  background: #f9f9fb;
+.scroll-buttons {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 20px;
+  gap: 8px;
 }
 
-#previewCanvas {
-  background: #fafbfc;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px #eee;
-  display: block;
-  margin-bottom: 12px;
-  width: 380px;
-  height: 380px;
-  max-width: 100%;
-}
-
-#downloadBtn {
-  background: #60a5fa;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 8px 24px;
-  font-size: 1.1em;
-  font-weight: 600;
+.scroll-buttons button {
+  background: transparent;
+  color: #333;
+  border: 2px solid #dfdfdf;
+  border-radius: 6px;
+  padding: 4px 10px;
   cursor: pointer;
-  transition: background 0.18s;
-  margin-top: 10px;
+  font-size: 14px;
+  transition: background 0.2s;
 }
-#downloadBtn:hover {
-  background: #357ae8;
+
+.scroll-buttons button:hover {
+  background: #333; 
+  color: #fff;
+}
+.category-section ul {
+  scroll-snap-type: x mandatory;
+  overflow-x: auto;
+  display: flex;
+  gap: 16px;
+  padding: 0;
+  margin: 0;
+}
+
+.category-section li {
+  scroll-snap-align: start;
 }
