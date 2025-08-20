@@ -105,7 +105,7 @@ document.addEventListener("click", (e) => {
 
     if (existing) {
       existing.querySelector("img").src = imageUrl;
-      return; // 교체했으니 추가 X
+      return;
     }
   }
 
