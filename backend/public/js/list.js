@@ -64,8 +64,8 @@ window.addEventListener('DOMContentLoaded', () => {
             <div class="category-header">
               <h3>${category}</h3>
               <div class="scroll-buttons">
-                <button class="btn-prev" data-section="${gIdx}">←</button>
-                <button class="btn-next" data-section="${gIdx}">→</button>
+                <button class="btn-prev" data-section="${gIdx}"><</button>
+                <button class="btn-next" data-section="${gIdx}">></button>
               </div>
             </div>
             <div class="category-body">

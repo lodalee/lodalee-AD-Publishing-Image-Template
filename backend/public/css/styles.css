@@ -173,8 +173,8 @@ body {
 }
 
 .scroll-buttons button:hover {
-  background: #333; /* hover 시 배경 채움 */
-  color: #fff; /* 글자색 반전 */
+  background: #333; 
+  color: #fff;
 }
 .category-section ul {
   scroll-snap-type: x mandatory;

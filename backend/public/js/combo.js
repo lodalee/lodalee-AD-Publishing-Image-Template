@@ -76,30 +76,13 @@ document.addEventListener("click", (e) => {
   const wrapper = document.createElement("div");
   wrapper.className = "candidate-thumb-wrapper";
   wrapper.innerHTML = `
-    <span class="item-remove candidate-remove">ㅡ</span>
+    <span class="item-remove candidate-remove">x</span>
     <img src="${imageUrl}" class="candidate-thumb" draggable="true" />
   `;
   imagesWrap.appendChild(wrapper);
 
   updateCandidateCount(group);
 });
-
-/**
- * (옵션) 후보 박스에서 세로 휠을 가로 스크롤로 변환
- *  - CSS로 스크롤을 끈 상태면 자연히 영향 없음
- */
-document.getElementById("candidateList")?.addEventListener(
-  "wheel",
-  (e) => {
-    const box = e.target.closest(".candidate-box");
-    if (!box) return;
-    if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-      box.scrollLeft += e.deltaY;
-      e.preventDefault();
-    }
-  },
-  { passive: false }
-);
 
 /**
  * [기능] 후보 썸네일 이미지를 클릭하면 콤보리스트에 아이템 추가
@@ -110,8 +93,23 @@ document.addEventListener("click", (e) => {
   if (!e.target.classList.contains("candidate-thumb")) return;
 
   const imageUrl = e.target.src;
-  const category = e.target.closest(".candidate-group")?.dataset.category || "";
+  const category = e.target.closest(".candidate-group")?.dataset.category?.trim() || "";
 
+  const replaceModeEl = document.getElementById("replaceMode");
+  const isReplaceMode = !!(replaceModeEl && replaceModeEl.checked);
+
+  if (isReplaceMode) {
+    // ✅ 리플레이스 모드 → 같은 카테고리 있으면 교체
+    const existing = Array.from(comboList.querySelectorAll(".combo-item"))
+      .find(item => item.querySelector(".combo-category")?.textContent.trim() === category);
+
+    if (existing) {
+      existing.querySelector("img").src = imageUrl;
+      return; // 교체했으니 추가 X
+    }
+  }
+
+  // ✅ 기본 모드 or 같은 카테고리 없음 → 새로 추가
   const item = document.createElement("div");
   item.className = "combo-item";
   item.draggable = true;
