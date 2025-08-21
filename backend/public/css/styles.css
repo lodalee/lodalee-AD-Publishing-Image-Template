@@ -1,6 +1,11 @@
 /* ===================== */
 /* === [공통 전체] ====== */
 /* ===================== */
+* {
+  padding:0;
+  margin: 0;
+}
+
 html,
 body {
   width: 100vw;
@@ -8,10 +13,34 @@ body {
   overflow: hidden; /* 전체 스크롤 막기! */
   background: #f8fafc;
   font-family: 'Segoe UI', sans-serif;
+  font-size:16px;
   margin: 0;
   padding: 0;
   min-height: 100vh;
 }
+
+ul, li {
+  list-style: none;
+}
+
+button{
+  background: inherit ; border:none; box-shadow:none; border-radius:0; padding:0; overflow:visible; cursor:pointer
+}
+
+:root {
+    --color-main1: #007bff;
+    --color-main2: #c79360;
+    --color-main3: #8f8976;
+    --color-main4: #ff0b9c;
+    --color-yellow: #ffde00;
+  	--number: "1666-5721"
+}
+
+
+#wrap {
+  display:flex;
+}
+
 .wrap {
   min-height: calc(100vh - 56px);
   display: flex;
@@ -19,29 +48,122 @@ body {
   justify-content: center;
 }
 
+
 /* ===================== */
-/* === [네비게이션] ===== */
+/* === [사이드바] ===== */
 /* ===================== */
-.nav {
+.gnb {
+  width:100%;
+  height:80px;
+  display: flex;
+  align-items: center;
+  padding: 0 2%;
+  border-bottom:1px solid #dbdbdb;
+}
+
+.gnb .logo {
+  width:100px;
+}
+
+.gnb .logo img {
+  width:100%;
+}
+
+
+/* ===================== */
+/* === [사이드바] ===== */
+/* ===================== */
+.side-bar{
+  width:200px;
+  height:100vh;
+  background-color: #d2dfeb;
+      padding-left: 10px;
+    padding-top: 20px;
+}
+
+.side-bar li{
+  padding: 20px 0px 20px 10px;
+  cursor: wait;
+}
+
+.side-bar li.active{
+  background:#f7fafc;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  font-weight: 700;
+  color: #007bff;
+  cursor:pointer;
+}
+
+.side-bar li span {
+  background:#c6cfd7;
+  border-radius: 6px;
+  padding:2px 6px 4px;
+  margin-left:10px;
+  font-size: 12px;
+  color: #8d8d8d;
+  font-weight: 500;
+}
+
+
+/* ================================== */
+/* === [템플릿 리스트 네비게이션] ===== */
+/* ================================== */
+
+.template-container-wrap {
+    overflow: hidden;
+    height: 100%;
+    position: relative;
+    overflow-y: scroll;  
+}
+
+
+.template-list {
+  display: flex;
+  flex-direction: column;
+  width:33%;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px #dde3f6;
+  background: #fff;
+  padding: 2.5em 3vw;
+  box-sizing: border-box;
+  height: 90vh;
+
+}
+
+.template-list .nav {
   background: #fff;
   display: flex;
+  justify-content: space-between;
   gap: 20px;
-  padding: 18px 40px 8px 40px;
-  border-bottom: 1px solid #e5e7eb;
+  padding-bottom:40px;
 }
-.nav a {
-  color: #334155;
+
+.template-list .nav input {
+  width:80%;
+  background: #f5f5f5;
+  border-radius: 100px;
+  border: 0;
+  padding: 0 20px;
+}
+
+.template-list .nav button {
   text-decoration: none;
   font-size: 17px;
   font-weight: 500;
-  padding: 4px 14px;
-  border-radius: 8px 8px 0 0;
-  transition:
-    background 0.2s,
-    color 0.2s;
+  transition: background 0.2s, color 0.2s;
+  background: var(--color-main1);
+  color: #fff;
+  border-radius: 100px;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-.nav a.active,
-.nav a:hover {
+
+.template-list .nav button.active,
+.template-list .nav button:hover {
   background: #60a5fa;
   color: #fff;
 }
@@ -61,16 +183,10 @@ body {
 /* ===================== */
 .template-container {
   flex: 4 1 0; /* 비율만 4 */
-  width: 80vw;
   max-width: 1100px;
   min-width: 350px;
   margin-left: 2%;
-  border-radius: 16px;
-  box-shadow: 0 2px 8px #dde3f6;
-  background: #fff;
-  padding: 2.5em 3vw;
-  box-sizing: border-box;
-  height: 90vh;
+
   overflow-y: auto;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE/Edge */

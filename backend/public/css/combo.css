@@ -11,7 +11,6 @@
   width: 100vw;
   padding: 0 2vw; /* 좌우 여백 동일하게 */
   box-sizing: border-box;
-  margin-top: 0.5%;
 }
 
 .combo-container,
@@ -105,6 +104,15 @@
   transition: border-color 0.2s;
 }
 
+.combo-list .combo-item {
+  display: flex;
+}
+
+.combo-list .combo-item.dragging {
+  cursor:grabbing
+}
+
+
 .combo-list.drag-over {
   border-color: #60a5fa;
   background: #e8f0ff;
@@ -122,6 +130,7 @@
 .combo-img-wrapper {
   position: relative;
   display: inline-block;
+  cursor:grab
 }
 
 .combo-img-wrapper img {
@@ -159,10 +168,10 @@
   position: absolute;
   bottom: 8px; 
   right: 8px; 
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.2);
   color: #ffffff;
-  font-size: 1em;
-  font-weight: 600;
+  font-size: 0.75rem;
+  font-weight: 500;
   padding: 4px 8px;
   border-radius: 6px;
 }

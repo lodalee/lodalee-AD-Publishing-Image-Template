@@ -1,4 +1,4 @@
-// list.js
+//<!------------------------------------------------------------------- 템플릿 lists 조회 api ------------------------------------------------------------------->
 window.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('templateList');
   const searchBox = document.querySelector('.search-box');
@@ -58,19 +58,15 @@ window.addEventListener('DOMContentLoaded', () => {
         const idxB = categoryOrder.indexOf(b[0]);
         return (idxA === -1 ? 999 : idxA) - (idxB === -1 ? 999 : idxB);
       })
-      .forEach(([category, items], gIdx) => {
+      .forEach(([category, items]) => {
         html += `
           <section class="category-section">
             <div class="category-header">
               <h3>${category}</h3>
-              <div class="scroll-buttons">
-                <button class="btn-prev" data-section="${gIdx}"><</button>
-                <button class="btn-next" data-section="${gIdx}">></button>
-              </div>
             </div>
             <div class="category-body">
-              <ul id="category-${gIdx}">
-                ${items.map((item, idx) => renderItem(item, idx, category)).join('')}
+              <ul id="category">
+                ${items.map((item) => renderItem(item, category)).join('')}
               </ul>
             </div>
           </section>
@@ -87,23 +83,6 @@ window.addEventListener('DOMContentLoaded', () => {
       const res = await fetch(`/api/template${search ? '?search=' + encodeURIComponent(search) : ''}`);
       const data = await res.json();
       container.innerHTML = renderTemplates(data);
-
-      // 4. 스크롤 버튼 동작
-      document.querySelectorAll('.category-section').forEach(section => {
-        const ul = section.querySelector('ul');
-        const items = ul.querySelectorAll('li');
-        let currentIndex = 0;
-
-        section.querySelector('.btn-prev').addEventListener('click', () => {
-          currentIndex = Math.max(0, currentIndex - 1);
-          items[currentIndex].scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
-        });
-
-        section.querySelector('.btn-next').addEventListener('click', () => {
-          currentIndex = Math.min(items.length - 1, currentIndex + 1);
-          items[currentIndex].scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
-        });
-      });
 
     } catch (e) {
       container.innerHTML = '<p>에러가 발생했습니다.</p>';

@@ -5,69 +5,172 @@
     <title>템플릿 목록</title>
     <link rel="stylesheet" href="/css/styles.css" />
     <link rel="stylesheet" href="/css/combo.css" />
+    <link rel="stylesheet" href="/css/register.css" />
   </head>
   <body>
-    <nav class="nav">
-      <a href="index.html" class="active">📂 템플릿 목록</a>
-      <a href="register.html">📝 템플릿 등록</a>
-      <input type="text" placeholder="🔍 검색..." class="search-box">
+    <!-------------------------------------------------------------------- gnb & side-bar -------------------------------------------------------------------->
+    <nav class="gnb">
+      <div class="logo">
+        <img src="https://cdn.imweb.me/upload/S202212289feb50bbbee7e/136d3b8a07b8e.png" alt="분양의신 로고">
+      </div>
     </nav>
-    <div class="main-workspace">
-      <!-- 1. 기존 템플릿 목록 -->
-      <div class="template-container">
-        <h2>템플릿 목록</h2>
-        <div id="templateList">
-          <p>아직 구현 전이거나, 등록된 템플릿이 없습니다.</p>
-        </div>
-      </div>
-      <!-- 2. 후보 이미지 -->
-      <div class="candidate-container">
-        <h2>후보 목록</h2>
-        <div id="candidateList"></div>
-      </div>
-      <!-- 3. 조합 공간 -->
-      <div class="combo-container">
-        <div class="combo-header">
-          <h2>조합 영역</h2>
-          <div class="tooltip">ℹ️
-            <span class="tooltip-text">
-              1. 템플릿 이미지 클릭<br />
-              2. 드래그하여 순서 변경
-            </span>
+    <div id="wrap">
+      <aside class="side-bar">
+        <ul>
+          <li>📱 모바일<span>🚧제작중</span></li>
+          <li>🎥 아트 디자인<span>🚧제작중</span></li>
+          <li class="active">🖥️ PC</li>
+          <li>📑 제안서<span>🚧제작중</span></li>
+        </ul>
+      </aside>
 
-            <label>
-              <input type="checkbox" id="replaceMode">
-              동일 카테고리 대체 모드
-            </label>
+      <!------------------------------------------------------------------- main-workspace ------------------------------------------------------------------->
+      <div class="main-workspace">
+        <div class="template-list">
+          <nav class="nav">
+            <!-- <a href="index.html" class="active">📂 PC템플릿 목록</a> -->
+            <input type="text" placeholder="🔍 PC템플릿 검색..." class="search-box">
+            <button>＋</button>
+          </nav>
+          
+          <div class="template-container-wrap">
+            <!-- 1. 기존 템플릿 목록 -->
+            <div class="template-container">
+              <div id="templateList">
+                <p>아직 구현 전이거나, 등록된 템플릿이 없습니다.</p>
+              </div>
+            </div>
           </div>
-          <span id="comboCount" class="combo-count">0개 선택</span>
         </div>
+        <!-- 2. 후보 이미지 -->
+        <div class="candidate-container">
+          <h2>후보 목록</h2>
+          <div id="candidateList"></div>
+        </div>
+        <!-- 3. 조합 공간 -->
+        <div class="combo-container">
+          <div class="combo-header">
+            <h2>조합 영역</h2>
+            <div class="tooltip">ℹ️
+              <span class="tooltip-text">
+                1. 템플릿 이미지 클릭<br />
+                2. 드래그하여 순서 변경
+              </span>
 
-        <div id="comboList" class="combo-list"></div>
+              <label>
+                <input type="checkbox" id="replaceMode">
+                동일 카테고리 대체 모드
+              </label>
+            </div>
+            <span id="comboCount" class="combo-count">0개 선택</span>
+          </div>
 
-        <button id="mergeBtn" type="button" style="margin-top: 16px">
-          합성
-        </button>
+          <div id="comboList" class="combo-list"></div>
+
+          <button id="mergeBtn" type="button" style="margin-top: 16px">
+            합성
+          </button>
+        </div>
       </div>
-      <!-- 3. 미리보기/다운로드 -->
-      <!-- <div class="preview-container">
-        <h2>미리보기</h2>
-        <canvas
-          id="previewCanvas"
-          width="800"
-          height="400"
-          style="
-            background: #fafbfc;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px #eee;
-            display: block;
-            margin-bottom: 12px;
-          "
-        ></canvas>
-        <button id="downloadBtn" type="button">다운로드</button>
-      </div> -->
     </div>
-    <script src="/js/list.js"></script>
+    <!-- END//id="wrap"-->
+
+    <!-------------------------------------------------------------------템플릿 등록 팝업------------------------------------------------------------------->
+    <dialog id="popup-wrap">
+      <div class="template-box">
+        <button id="popup-wrap-close-btn">×</button>
+
+        <!-- 폼 -->
+        <form id="templateForm" enctype="multipart/form-data">
+          <h2>템플릿 등록</h2>
+
+          <div class="row">
+            <div class="label">제목</div>
+            <input type="text" name="title" maxlength="40" /></input>
+          </div>
+
+          <div class="row">
+            <div class="label">내용</div>
+            <textarea
+              name="content"
+              rows="3"
+              maxlength="1000"
+              class="fixed-textarea"
+            ></textarea>
+          </div>
+
+          <div class="row">
+            <div class="label cat-label">
+              카테고리
+              <button type="button" class="cat-add-btn" id="catAddBtn">
+                카테고리 추가
+              </button>
+              <div class="category-delete-wrap">
+                <button type="button" class="cat-del-btn" id="catDelBtn">
+                  카테고리 삭제
+                </button>
+                <div id="catDeleteList" class="cat-delete-list"></div>
+              </div>
+            </div>
+            <div style="display: flex; gap: 10px">
+              <select
+                id="categorySelect"
+                name="category"
+                style="flex: 1"
+              ></select>
+            </div>
+            <div id="catInputBox" style="display: none; margin-top: 8px">
+              <input
+                type="text"
+                id="catInput"
+                placeholder="새 카테고리 입력"
+                maxlength="15"
+                style="flex: 1"
+              />
+              <button type="button" id="catInputOk" style="margin-left: 8px">
+                추가
+              </button>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="label">태그 <span>(5개로 제한)</span></div>
+            <div class="tag-input-wrap">
+              <input
+                type="text"
+                id="tagInput"
+                placeholder="태그 입력 후 엔터"
+                autocomplete="off"
+                name="tagInput"
+              />
+              <div id="tagList" class="tag-list"></div>
+            </div>
+            <!-- 숨겨진 input, 폼 제출 전 태그 배열로 값을 넣음 -->
+            <input type="hidden" name="tags" id="hiddenTags" />
+          </div>
+
+          <div class="row">
+            <div class="label">이미지</div>
+            <div id="imgBox" class="img-upload">
+              <span>+</span>
+              <input
+                type="file"
+                name="image"
+                accept="image/*"
+                style="display: none"
+              />
+            </div>
+          </div>
+          <div id="imgPreview" class="img-preview-large"></div>
+
+          <button type="submit">등록하기</button>
+        </form>
+        <div id="result"></div>
+      </div>
+    </dialog>
+
+    <script src="/js/get-lists-api.js"></script>
     <script src="/js/combo.js"></script>
+    <script src="/js/register-api.js"></script>
   </body>
 </html>

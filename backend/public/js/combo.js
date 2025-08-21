@@ -2,51 +2,8 @@ const comboList = document.getElementById('comboList');
 const comboCount = document.getElementById('comboCount');
 const candidateList = document.getElementById("candidateList");
 
-/** [유틸] 카테고리 그룹을 찾아오거나(없으면 생성) 반환 */
-function ensureCategoryGroup(category) {
-  let group = document.querySelector(`.candidate-group[data-category="${category}"]`);
-  if (group) return group;
 
-  group = document.createElement("div");
-  group.className = "candidate-group";
-  group.dataset.category = category;
-  group.innerHTML = `
-    <h3 class="candidate-title">
-      ${category}
-      <span class="candidate-count">(0/6)</span>
-    </h3>
-    <div class="candidate-box" role="region" aria-label="${category}">
-      <div class="candidate-images"></div>
-    </div>
-  `;
-  candidateList.appendChild(group);
-  return group;
-}
-
-/** [유틸] 해당 그룹의 (선택/최대) 카운트 텍스트 갱신 */
-function updateCandidateCount(group) {
-  const imagesWrap = group.querySelector(".candidate-images");
-  const countEl = group.querySelector(".candidate-count");
-  const count = imagesWrap.querySelectorAll(".candidate-thumb-wrapper").length;
-  if (countEl) countEl.textContent = `(${count}/6)`;
-}
-
-/** [유틸] 후보 전체에서 동일 src 이미지가 이미 존재하는지 검사 (중복 방지) */
-function isDuplicateInCandidates(src) {
-  const all = candidateList.querySelectorAll(".candidate-thumb");
-  for (const img of all) {
-    if (img.src === src) return true;
-  }
-  return false;
-}
-
-/**
- * [기능] 템플릿 이미지 클릭 시 → 후보(카테고리 그룹)에 썸네일 추가
- *  - 그룹 없으면 생성
- *  - 같은 이미지 중복 추가 방지 (alert)
- *  - 카테고리별 최대 6장 제한 (alert)
- *  - 후보 썸네일에는 “ㅡ” 삭제 버튼 포함
- */
+//<!------------------------------------------------------------------- 후보 목록 사진 추가 ------------------------------------------------------------------->
 document.addEventListener("click", (e) => {
   const li = e.target.closest(".img-card");
   if (!li) return;
@@ -84,11 +41,7 @@ document.addEventListener("click", (e) => {
   updateCandidateCount(group);
 });
 
-/**
- * [기능] 후보 썸네일 이미지를 클릭하면 콤보리스트에 아이템 추가
- *  - 콤보 아이템에도 “ㅡ” 삭제 버튼 유지(기존과 동일)
- *  - 카운트 update
- */
+//<!------------------------------------------------------------------- 조합 영역 사진 추가 ------------------------------------------------------------------->
 document.addEventListener("click", (e) => {
   if (!e.target.classList.contains("candidate-thumb")) return;
 
@@ -105,7 +58,7 @@ document.addEventListener("click", (e) => {
 
     if (existing) {
       existing.querySelector("img").src = imageUrl;
-      return; // 교체했으니 추가 X
+      return;
     }
   }
 
@@ -124,9 +77,8 @@ document.addEventListener("click", (e) => {
   updateCount?.();
 });
 
-/**
- * [기능] 콤보리스트에서 드래그로 순서 변경
- */
+
+//<!--------------------------------------------------------------- 조합 영역 드래그로 순서 변경 ---------------------------------------------------------------->
 let currentDragging = null;
 
 comboList.addEventListener('dragstart', (e) => {
@@ -159,12 +111,48 @@ comboList.addEventListener('dragend', () => {
   }
 });
 
-/**
- * [기능] 공통 삭제 핸들러 (후보/콤보 공용)
- *  - .item-remove 클릭 시:
- *    · 콤보: .combo-item 제거 + 콤보 카운트 갱신
- *    · 후보: .candidate-thumb-wrapper 제거 + 해당 그룹 카운트 갱신
- */
+
+//<!--------------------------------------------------- 콤보리스트 이미지를 세로로 이어붙여 WebP로 다운로드 ------------------------------------------------------->
+document.getElementById("mergeBtn").addEventListener("click", async () => {
+  const images = comboList.querySelectorAll("img");
+  if (images.length === 0) {
+    alert("선택된 이미지가 없습니다.");
+    return;
+  }
+
+  const firstImg = images[0];
+  const imgWidth = firstImg.naturalWidth || 200; 
+  const imgHeight = firstImg.naturalHeight || 200;
+
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
+  canvas.width = imgWidth;
+  canvas.height = imgHeight * images.length;
+
+  for (let i = 0; i < images.length; i++) {
+    const img = await loadImage(images[i].src);
+    ctx.drawImage(img, 0, i * imgHeight, imgWidth, imgHeight);
+  }
+
+  // 현재 날짜와 시간 포맷
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+  const hours = String(now.getHours()).padStart(2, "0");
+  const minutes = String(now.getMinutes()).padStart(2, "0");
+
+  const formattedDate = `${year}.${month}.${day}_${hours}h${minutes}m`;
+
+  const imageData = canvas.toDataURL("image/webp");
+  const link = document.createElement("a");
+  link.href = imageData;
+  link.download = `PC_${formattedDate}_image.webp`;
+  link.click();
+});
+
+
+//<!-------------------------------------------------------- [후보목록/조합영역] 이미지 공통 삭제 핸들러 --------------------------------------------------------->
 document.addEventListener('click', (e) => {
   if (!e.target.classList.contains('item-remove')) return;
 
@@ -186,45 +174,54 @@ document.addEventListener('click', (e) => {
   }
 });
 
-/** [기능] 콤보리스트 선택 개수 표시 갱신 */
+/** 선택 개수 표시 갱신 */
 function updateCount() {
   const count = comboList.querySelectorAll('.combo-item').length;
   comboCount.textContent = `${count}개 선택`;
   comboCount.style.color = count >= 6 ? '#ff4343ff' : '#222222ff';
 }
 
-/**
- * [기능] 콤보리스트 이미지를 세로로 이어붙여 WebP로 다운로드
- */
-document.getElementById("mergeBtn").addEventListener("click", async () => {
-  const images = comboList.querySelectorAll("img");
-  if (images.length === 0) {
-    alert("선택된 이미지가 없습니다.");
-    return;
+//<!------------------------------------------------------------------- 유틸 ------------------------------------------------------------------->
+
+/** [후보목록] 카테고리 그룹을 찾아오거나(없으면 생성) 반환 */
+function ensureCategoryGroup(category) {
+  let group = document.querySelector(`.candidate-group[data-category="${category}"]`);
+  if (group) return group;
+
+  group = document.createElement("div");
+  group.className = "candidate-group";
+  group.dataset.category = category;
+  group.innerHTML = `
+    <h3 class="candidate-title">
+      ${category}
+      <span class="candidate-count">(0/6)</span>
+    </h3>
+    <div class="candidate-box" role="region" aria-label="${category}">
+      <div class="candidate-images"></div>
+    </div>
+  `;
+  candidateList.appendChild(group);
+  return group;
+}
+
+/** [후보목록] 해당 그룹의 (선택/최대) 카운트 텍스트 갱신 */
+function updateCandidateCount(group) {
+  const imagesWrap = group.querySelector(".candidate-images");
+  const countEl = group.querySelector(".candidate-count");
+  const count = imagesWrap.querySelectorAll(".candidate-thumb-wrapper").length;
+  if (countEl) countEl.textContent = `(${count}/6)`;
+}
+
+/** [후보목록] 전체에서 동일 src 이미지가 이미 존재하는지 검사 (중복 방지) */
+function isDuplicateInCandidates(src) {
+  const all = candidateList.querySelectorAll(".candidate-thumb");
+  for (const img of all) {
+    if (img.src === src) return true;
   }
+  return false;
+}
 
-  const firstImg = images[0];
-  const imgWidth = firstImg.naturalWidth || 200;
-  const imgHeight = firstImg.naturalHeight || 200;
-
-  const canvas = document.createElement("canvas");
-  const ctx = canvas.getContext("2d");
-  canvas.width = imgWidth;
-  canvas.height = imgHeight * images.length;
-
-  for (let i = 0; i < images.length; i++) {
-    const img = await loadImage(images[i].src);
-    ctx.drawImage(img, 0, i * imgHeight, imgWidth, imgHeight);
-  }
-
-  const imageData = canvas.toDataURL("image/webp");
-  const link = document.createElement("a");
-  link.href = imageData;
-  link.download = "my-photo.webp";
-  link.click();
-});
-
-/** [유틸] 이미지 로드 보장 */
+/** 이미지 로드 보장 */
 function loadImage(src) {
   return new Promise((resolve, reject) => {
     const img = new Image();
