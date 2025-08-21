@@ -1,4 +1,4 @@
-// list.js
+//<!------------------------------------------------------------------- 템플릿 lists 조회 api ------------------------------------------------------------------->
 window.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('templateList');
   const searchBox = document.querySelector('.search-box');
@@ -119,3 +119,4 @@ window.addEventListener('DOMContentLoaded', () => {
     if (e.key === 'Enter') loadTemplates(searchBox.value.trim());
   });
 });
+

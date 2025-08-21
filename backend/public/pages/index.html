@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/css/register.css" />
   </head>
   <body>
+    <!-------------------------------------------------------------------- gnb & side-bar -------------------------------------------------------------------->
     <nav class="gnb">
       <div class="logo">
         <img src="https://cdn.imweb.me/upload/S202212289feb50bbbee7e/136d3b8a07b8e.png" alt="분양의신 로고">
@@ -23,6 +24,7 @@
         </ul>
       </aside>
 
+      <!------------------------------------------------------------------- main-workspace ------------------------------------------------------------------->
       <div class="main-workspace">
         <div class="template-list">
           <nav class="nav">
@@ -73,6 +75,7 @@
     </div>
     <!-- END//id="wrap"-->
 
+    <!-------------------------------------------------------------------템플릿 등록 팝업------------------------------------------------------------------->
     <dialog id="popup-wrap">
       <div class="template-box">
         <button id="popup-wrap-close-btn">×</button>
@@ -166,53 +169,8 @@
       </div>
     </dialog>
 
-    <!--템플릿 추가 팝업 Jquery-->
-    <script>
-      // 팝업 열기
-      document.querySelectorAll('.template-list .nav button').forEach(function(btn) {
-        btn.addEventListener('click', function(e) {
-          e.preventDefault(); // form 안에 있을 경우 대비
-          document.querySelector('#popup-wrap').classList.add('open');
-        });
-      });
-
-      // 팝업 닫기 버튼 클릭 시 닫기
-      document.querySelector('#popup-wrap-close-btn').addEventListener('click', function() {
-        document.querySelector('#popup-wrap').classList.remove('open');
-      });
-
-      // 배경 클릭 시 닫기 (내용 영역 제외)
-      document.querySelector('#popup-wrap').addEventListener('click', function(e) {
-        if (!e.target.closest('.template-box')) {
-          this.classList.remove('open');
-        }
-      });
-
-      // ESC 키 눌렀을 때 닫기 (open 클래스가 있는 경우에만)
-      document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-          const popup = document.querySelector('#popup-wrap');
-          if (popup.classList.contains('open')) {
-            popup.classList.remove('open');
-          }
-        }
-      });
-    </script>
-
-    <script>
-    //템플릿 리스트 가로스크롤  
-      const categorySection = document.querySelector('.category-section ul');
-
-      categorySection.addEventListener('wheel', function(e) {
-        // 세로 스크롤을 막고
-        e.preventDefault();
-        // 가로로 이동시키기
-        categorySection.scrollLeft += e.deltaY;
-      }, { passive: false });
-    </script>
-
-    <script src="/js/list.js"></script>
+    <script src="/js/get-lists-api.js"></script>
     <script src="/js/combo.js"></script>
-    <script src="/js/register.js"></script>
+    <script src="/js/register-api.js"></script>
   </body>
 </html>
