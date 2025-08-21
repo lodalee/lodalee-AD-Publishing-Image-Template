@@ -121,7 +121,7 @@ document.getElementById("mergeBtn").addEventListener("click", async () => {
   }
 
   const firstImg = images[0];
-  const imgWidth = firstImg.naturalWidth || 200;
+  const imgWidth = firstImg.naturalWidth || 200; 
   const imgHeight = firstImg.naturalHeight || 200;
 
   const canvas = document.createElement("canvas");
@@ -147,7 +147,7 @@ document.getElementById("mergeBtn").addEventListener("click", async () => {
   const imageData = canvas.toDataURL("image/webp");
   const link = document.createElement("a");
   link.href = imageData;
-  link.download = `${formattedDate}_image.webp`;
+  link.download = `PC_${formattedDate}_image.webp`;
   link.click();
 });
 
