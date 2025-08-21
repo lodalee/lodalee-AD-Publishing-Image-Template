@@ -5,6 +5,7 @@
     <title>템플릿 목록</title>
     <link rel="stylesheet" href="/css/styles.css" />
     <link rel="stylesheet" href="/css/combo.css" />
+    <link rel="stylesheet" href="/css/register.css" />
   </head>
   <body>
     <nav class="gnb">
@@ -27,14 +28,15 @@
           <nav class="nav">
             <!-- <a href="index.html" class="active">📂 PC템플릿 목록</a> -->
             <input type="text" placeholder="🔍 PC템플릿 검색..." class="search-box">
-            <a href="register.html">＋</a>
+            <button>＋</button>
           </nav>
-
-          <!-- 1. 기존 템플릿 목록 -->
-          <div class="template-container">
-            <h2>템플릿 목록</h2>
-            <div id="templateList">
-              <p>아직 구현 전이거나, 등록된 템플릿이 없습니다.</p>
+          
+          <div class="template-container-wrap">
+            <!-- 1. 기존 템플릿 목록 -->
+            <div class="template-container">
+              <div id="templateList">
+                <p>아직 구현 전이거나, 등록된 템플릿이 없습니다.</p>
+              </div>
             </div>
           </div>
         </div>
@@ -69,7 +71,148 @@
         </div>
       </div>
     </div>
+    <!-- END//id="wrap"-->
+
+    <dialog id="popup-wrap">
+      <div class="template-box">
+        <button id="popup-wrap-close-btn">×</button>
+
+        <!-- 폼 -->
+        <form id="templateForm" enctype="multipart/form-data">
+          <h2>템플릿 등록</h2>
+
+          <div class="row">
+            <div class="label">제목</div>
+            <input type="text" name="title" maxlength="40" /></input>
+          </div>
+
+          <div class="row">
+            <div class="label">내용</div>
+            <textarea
+              name="content"
+              rows="3"
+              maxlength="1000"
+              class="fixed-textarea"
+            ></textarea>
+          </div>
+
+          <div class="row">
+            <div class="label cat-label">
+              카테고리
+              <button type="button" class="cat-add-btn" id="catAddBtn">
+                카테고리 추가
+              </button>
+              <div class="category-delete-wrap">
+                <button type="button" class="cat-del-btn" id="catDelBtn">
+                  카테고리 삭제
+                </button>
+                <div id="catDeleteList" class="cat-delete-list"></div>
+              </div>
+            </div>
+            <div style="display: flex; gap: 10px">
+              <select
+                id="categorySelect"
+                name="category"
+                style="flex: 1"
+              ></select>
+            </div>
+            <div id="catInputBox" style="display: none; margin-top: 8px">
+              <input
+                type="text"
+                id="catInput"
+                placeholder="새 카테고리 입력"
+                maxlength="15"
+                style="flex: 1"
+              />
+              <button type="button" id="catInputOk" style="margin-left: 8px">
+                추가
+              </button>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="label">태그 <span>(5개로 제한)</span></div>
+            <div class="tag-input-wrap">
+              <input
+                type="text"
+                id="tagInput"
+                placeholder="태그 입력 후 엔터"
+                autocomplete="off"
+                name="tagInput"
+              />
+              <div id="tagList" class="tag-list"></div>
+            </div>
+            <!-- 숨겨진 input, 폼 제출 전 태그 배열로 값을 넣음 -->
+            <input type="hidden" name="tags" id="hiddenTags" />
+          </div>
+
+          <div class="row">
+            <div class="label">이미지</div>
+            <div id="imgBox" class="img-upload">
+              <span>+</span>
+              <input
+                type="file"
+                name="image"
+                accept="image/*"
+                style="display: none"
+              />
+            </div>
+          </div>
+          <div id="imgPreview" class="img-preview-large"></div>
+
+          <button type="submit">등록하기</button>
+        </form>
+        <div id="result"></div>
+      </div>
+    </dialog>
+
+    <!--템플릿 추가 팝업 Jquery-->
+    <script>
+      // 팝업 열기
+      document.querySelectorAll('.template-list .nav button').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault(); // form 안에 있을 경우 대비
+          document.querySelector('#popup-wrap').classList.add('open');
+        });
+      });
+
+      // 팝업 닫기 버튼 클릭 시 닫기
+      document.querySelector('#popup-wrap-close-btn').addEventListener('click', function() {
+        document.querySelector('#popup-wrap').classList.remove('open');
+      });
+
+      // 배경 클릭 시 닫기 (내용 영역 제외)
+      document.querySelector('#popup-wrap').addEventListener('click', function(e) {
+        if (!e.target.closest('.template-box')) {
+          this.classList.remove('open');
+        }
+      });
+
+      // ESC 키 눌렀을 때 닫기 (open 클래스가 있는 경우에만)
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          const popup = document.querySelector('#popup-wrap');
+          if (popup.classList.contains('open')) {
+            popup.classList.remove('open');
+          }
+        }
+      });
+    </script>
+
+    <script>
+    //템플릿 리스트 가로스크롤  
+      const categorySection = document.querySelector('.category-section ul');
+
+      categorySection.addEventListener('wheel', function(e) {
+        // 세로 스크롤을 막고
+        e.preventDefault();
+        // 가로로 이동시키기
+        categorySection.scrollLeft += e.deltaY;
+      }, { passive: false });
+    </script>
+
     <script src="/js/list.js"></script>
     <script src="/js/combo.js"></script>
+    <script src="/js/register.js"></script>
   </body>
 </html>
