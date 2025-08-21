@@ -42,27 +42,58 @@ document.addEventListener("click", (e) => {
 });
 
 //<!------------------------------------------------------------------- 조합 영역 사진 추가 ------------------------------------------------------------------->
+// 선택된 combo-item 추적 변수
+let selectedComboItem = null;
+
+// combo-item 클릭 → 선택/해제 토글
+document.addEventListener("click", (e) => {
+  const comboItem = e.target.closest(".combo-item");
+  const candidate = e.target.closest(".candidate-thumb-wrapper");
+
+  if (comboItem) {
+    // 이미 선택된 아이템 다시 클릭 → 해제
+    if (selectedComboItem === comboItem) {
+      comboItem.classList.remove("selected");
+      selectedComboItem = null;
+      return;
+    }
+
+    // 다른 아이템 클릭 → 기존 선택 해제 후 새로 선택
+    document.querySelectorAll(".combo-item.selected").forEach(item => {
+      item.classList.remove("selected");
+    });
+
+    comboItem.classList.add("selected");
+    selectedComboItem = comboItem;
+    return;
+  }
+
+  // candidate-thumb 클릭 시 (교체 로직은 아래에서 따로 처리)
+  if (candidate) return;
+
+  // combo-item 도 candidate도 아닌 바깥 영역 클릭 → 선택 해제
+  if (selectedComboItem) {
+    selectedComboItem.classList.remove("selected");
+    selectedComboItem = null;
+  }
+});
+
+// candidate-thumb 클릭 시 교체 로직 추가
 document.addEventListener("click", (e) => {
   if (!e.target.classList.contains("candidate-thumb")) return;
 
   const imageUrl = e.target.src;
-  const category = e.target.closest(".candidate-group")?.dataset.category?.trim() || "";
 
-  const replaceModeEl = document.getElementById("replaceMode");
-  const isReplaceMode = !!(replaceModeEl && replaceModeEl.checked);
-
-  if (isReplaceMode) {
-    // ✅ 리플레이스 모드 → 같은 카테고리 있으면 교체
-    const existing = Array.from(comboList.querySelectorAll(".combo-item"))
-      .find(item => item.querySelector(".combo-category")?.textContent.trim() === category);
-
-    if (existing) {
-      existing.querySelector("img").src = imageUrl;
-      return;
-    }
+  if (selectedComboItem) {
+    // ✅ 선택된 combo-item이 있으면 교체
+    selectedComboItem.querySelector("img").src = imageUrl;
+    // 선택 상태 유지 (바깥 클릭하기 전까지 계속 교체 가능)
+    return;
   }
 
-  // ✅ 기본 모드 or 같은 카테고리 없음 → 새로 추가
+  // ✅ 선택된 combo-item 없으면 → 새로 추가
+  const category = e.target.closest(".candidate-group")?.dataset.category?.trim() || "";
+
   const item = document.createElement("div");
   item.className = "combo-item";
   item.draggable = true;
@@ -76,7 +107,6 @@ document.addEventListener("click", (e) => {
   comboList.appendChild(item);
   updateCount?.();
 });
-
 
 //<!--------------------------------------------------------------- 조합 영역 드래그로 순서 변경 ---------------------------------------------------------------->
 let currentDragging = null;
