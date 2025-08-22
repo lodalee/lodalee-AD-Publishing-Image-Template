@@ -80,10 +80,14 @@ document.addEventListener("click", (e) => {
   if (!e.target.classList.contains("candidate-thumb")) return;
 
   const imageUrl = e.target.src;
+  const newCategory = e.target.closest(".candidate-group")?.dataset.category?.trim() || "";
+  const categoryEl = selectedComboItem.querySelector(".combo-category");
 
   if (selectedComboItem) {
-    // 선택된 combo-item이 있으면 교체
-    selectedComboItem.querySelector("img").src = imageUrl;
+  selectedComboItem.querySelector("img").src = imageUrl;
+
+  // 카테고리명도 교체
+  if (categoryEl) categoryEl.textContent = newCategory;
     // 선택 상태 유지 (바깥 클릭하기 전까지 계속 교체 가능)
     return;
   }
