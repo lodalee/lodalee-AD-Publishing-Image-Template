@@ -9,6 +9,7 @@ import { TemplateModule } from './template/template.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { S3Module } from './s3/s3.module';
+import { MoTemplateModule } from './mo_template/mo_template.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { S3Module } from './s3/s3.module';
     }),
     TemplateModule,
     S3Module,
+    MoTemplateModule,
   ],
   controllers: [AppController],
   providers: [AppService],
