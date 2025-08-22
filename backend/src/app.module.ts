@@ -8,6 +8,7 @@ import { LoggerMiddleware } from './middleware/logger.middleware';
 import { TemplateModule } from './template/template.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { S3Module } from './s3/s3.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { join } from 'path';
       inject: [ConfigService],
     }),
     TemplateModule,
+    S3Module,
   ],
   controllers: [AppController],
   providers: [AppService],
