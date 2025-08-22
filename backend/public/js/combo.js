@@ -41,28 +41,62 @@ document.addEventListener("click", (e) => {
   updateCandidateCount(group);
 });
 
-//<!------------------------------------------------------------------- 조합 영역 사진 추가 ------------------------------------------------------------------->
+
+//<!---------------------------------------------------------- 조합 영역 combo-item 클릭 → 선택/해제 토글 ------------------------------------------------------------>
+let selectedComboItem = null;
+
+document.addEventListener("click", (e) => {
+  const comboItem = e.target.closest(".combo-item");
+  const candidate = e.target.closest(".candidate-thumb-wrapper");
+
+  if (comboItem) {
+    if (selectedComboItem === comboItem) {
+      comboItem.classList.remove("selected");
+      selectedComboItem = null;
+      return;
+    }
+
+    document.querySelectorAll(".combo-item.selected").forEach(item => {
+      item.classList.remove("selected");
+    });
+
+    comboItem.classList.add("selected");
+    selectedComboItem = comboItem;
+    return;
+  }
+
+  if (candidate) return;
+
+  // combo-item 도 candidate도 아닌 바깥 영역 클릭 → 선택 해제
+  if (selectedComboItem) {
+    selectedComboItem.classList.remove("selected");
+    selectedComboItem = null;
+  }
+});
+
+//<!------------------------------------------------------------------- 조합 영역 이미지 교체/추가 ------------------------------------------------------------------->
+// 이미지 교체 기능
 document.addEventListener("click", (e) => {
   if (!e.target.classList.contains("candidate-thumb")) return;
 
   const imageUrl = e.target.src;
-  const category = e.target.closest(".candidate-group")?.dataset.category?.trim() || "";
 
-  const replaceModeEl = document.getElementById("replaceMode");
-  const isReplaceMode = !!(replaceModeEl && replaceModeEl.checked);
-
-  if (isReplaceMode) {
-    // ✅ 리플레이스 모드 → 같은 카테고리 있으면 교체
-    const existing = Array.from(comboList.querySelectorAll(".combo-item"))
-      .find(item => item.querySelector(".combo-category")?.textContent.trim() === category);
-
-    if (existing) {
-      existing.querySelector("img").src = imageUrl;
-      return;
-    }
+  if (selectedComboItem) {
+    // 선택된 combo-item이 있으면 교체
+    selectedComboItem.querySelector("img").src = imageUrl;
+    // 선택 상태 유지 (바깥 클릭하기 전까지 계속 교체 가능)
+    return;
   }
 
-  // ✅ 기본 모드 or 같은 카테고리 없음 → 새로 추가
+  // 선택된 combo-item 없으면 → 새로 추가
+  const category = e.target.closest(".candidate-group")?.dataset.category?.trim() || "";
+
+  // 조합영역 중복 방지
+  if (isDuplicateInCombo(imageUrl)) {
+    alert("조합 영역에 이미 있는 사진입니다.");
+    return;
+  }
+
   const item = document.createElement("div");
   item.className = "combo-item";
   item.draggable = true;
@@ -76,7 +110,6 @@ document.addEventListener("click", (e) => {
   comboList.appendChild(item);
   updateCount?.();
 });
-
 
 //<!--------------------------------------------------------------- 조합 영역 드래그로 순서 변경 ---------------------------------------------------------------->
 let currentDragging = null;
@@ -181,7 +214,21 @@ function updateCount() {
   comboCount.style.color = count >= 6 ? '#ff4343ff' : '#222222ff';
 }
 
-//<!------------------------------------------------------------------- 유틸 ------------------------------------------------------------------->
+//<!------------------------------------------------------------- [후보목록/조합영역] 전체 초기화  -------------------------------------------------------------->
+
+// 후보목록 전체 초기화
+document.getElementById("resetCandidates").addEventListener("click", () => {
+  candidateList.innerHTML = "";  // 
+});
+
+// 조합영역 전체 초기화
+document.getElementById("resetCombo").addEventListener("click", () => {
+  comboList.innerHTML = "";      
+  updateCount?.();              
+  selectedComboItem = null;   
+});
+
+//<!-------------------------------------------------------------------------- 유틸 ---------------------------------------------------------------------------->
 
 /** [후보목록] 카테고리 그룹을 찾아오거나(없으면 생성) 반환 */
 function ensureCategoryGroup(category) {
@@ -195,6 +242,7 @@ function ensureCategoryGroup(category) {
     <h3 class="candidate-title">
       ${category}
       <span class="candidate-count">(0/6)</span>
+      <button class="group-remove" title="이 카테고리 전체 삭제">삭제</button>
     </h3>
     <div class="candidate-box" role="region" aria-label="${category}">
       <div class="candidate-images"></div>
@@ -204,6 +252,16 @@ function ensureCategoryGroup(category) {
   return group;
 }
 
+// 카테고리 박스 자체 삭제 핸들러
+document.addEventListener("click", (e) => {
+  if (e.target.classList.contains("group-remove")) {
+    const group = e.target.closest(".candidate-group");
+    if (group) {
+      group.remove();  // ✅ 박스 자체 삭제 → 안의 이미지들도 같이 사라짐
+    }
+  }
+});
+
 /** [후보목록] 해당 그룹의 (선택/최대) 카운트 텍스트 갱신 */
 function updateCandidateCount(group) {
   const imagesWrap = group.querySelector(".candidate-images");
@@ -212,13 +270,19 @@ function updateCandidateCount(group) {
   if (countEl) countEl.textContent = `(${count}/6)`;
 }
 
-/** [후보목록] 전체에서 동일 src 이미지가 이미 존재하는지 검사 (중복 방지) */
+/** [후보목록] 이미지 중복 방지 */
 function isDuplicateInCandidates(src) {
   const all = candidateList.querySelectorAll(".candidate-thumb");
   for (const img of all) {
     if (img.src === src) return true;
   }
   return false;
+}
+
+/** [조합 영역] 이미지 중복 방지 */
+function isDuplicateInCombo(src) {
+  return Array.from(document.querySelectorAll('#comboList .combo-item img'))
+    .some(img => img.src === src);
 }
 
 /** 이미지 로드 보장 */
