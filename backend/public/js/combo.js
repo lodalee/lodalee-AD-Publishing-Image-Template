@@ -77,25 +77,21 @@ document.addEventListener("click", (e) => {
 //<!-------------------------------------------------------------------- 조합 영역 이미지 교체/추가 -------------------------------------------------------------------->
 // 이미지 교체 기능
 document.addEventListener("click", (e) => {
-  if (!e.target.classList.contains("candidate-thumb")) return;
+  const thumb = e.target.closest(".candidate-thumb");
+  if (!thumb) return;
 
-  const imageUrl = e.target.src;
-  const newCategory = e.target.closest(".candidate-group")?.dataset.category?.trim() || "";
-  const categoryEl = selectedComboItem.querySelector(".combo-category");
+  const imageUrl = thumb.src;
+  const newCategory = thumb.closest(".candidate-group")?.dataset.category?.trim() || "";
 
   if (selectedComboItem) {
-  selectedComboItem.querySelector("img").src = imageUrl;
-
-  // 카테고리명도 교체
-  if (categoryEl) categoryEl.textContent = newCategory;
-    // 선택 상태 유지 (바깥 클릭하기 전까지 계속 교체 가능)
+    // 선택된 combo-item이 있을 때만 교체
+    const categoryEl = selectedComboItem.querySelector(".combo-category");
+    selectedComboItem.querySelector("img").src = imageUrl;
+    if (categoryEl) categoryEl.textContent = newCategory;
     return;
   }
 
   // 선택된 combo-item 없으면 → 새로 추가
-  const category = e.target.closest(".candidate-group")?.dataset.category?.trim() || "";
-
-  // 조합영역 중복 방지
   if (isDuplicateInCombo(imageUrl)) {
     openAlertPopup("조합 영역에 이미 있는 사진입니다.");
     return;
@@ -108,7 +104,7 @@ document.addEventListener("click", (e) => {
     <div class="combo-img-wrapper">
       <span class="item-remove combo-remove">ㅡ</span>
       <img src="${imageUrl}" alt="조합 이미지">
-      <span class="combo-category">${category}</span>
+      <span class="combo-category">${newCategory}</span>
     </div>
   `;
   comboList.appendChild(item);
