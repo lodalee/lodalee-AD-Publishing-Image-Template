@@ -32,6 +32,8 @@ export class TemplateController {
     return this.templateService.findAll();
   }
 
+
+  //더미 데이터 자동 생성
   @Post('auto-upload')
   async autoUpload(@Body('rootDir') rootDir: string) {
     return this.templateService.autoImportFromFolder(rootDir);

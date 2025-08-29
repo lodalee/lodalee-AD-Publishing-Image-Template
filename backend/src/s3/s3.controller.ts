@@ -1,4 +1,4 @@
-import { Controller, Get, Query, Delete } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { S3Service } from './s3.service';
 
 @Controller('s3')

@@ -53,9 +53,6 @@ export class TemplateItem {
   @Prop({})
   imageUrl: string;
 
-  @Prop({ required: true, trim: true, maxlength: 200 })
-  title: string;
-
   @Prop({ maxlength: 5000 })
   description?: string;
 
@@ -78,6 +75,8 @@ export const TemplateItemSchema = SchemaFactory.createForClass(TemplateItem);
  *  =======================*/
 @Schema(options)
 export class Mo_Template extends Document {
+  @Prop({ required: true, trim: true, maxlength: 200 })
+  title: string;
 
   @Prop({ required: true, trim: true })
   creator: string;
@@ -87,9 +86,6 @@ export class Mo_Template extends Document {
 
   @Prop({ type: [TemplateItemSchema], default: [] })
   items: TemplateItem[];
-
-  @Prop({ type: Date, index: true })
-  uploadedAt: Date;
 }
 
 export const TemplateSchema = SchemaFactory.createForClass(Mo_Template);
