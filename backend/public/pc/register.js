@@ -1,3 +1,4 @@
+//<!---------------------------------------------------------------------------- 팝업 로더 ---------------------------------------------------------------------------->
 export async function mountRegisterPopup({
   trigger = '.template-list .nav button',
   dialog = '#popup-wrap',
@@ -26,6 +27,8 @@ export async function mountRegisterPopup({
   });
 }
 
+
+//<!------------------------------------------------------------------- 팝업 초기화 (폼 관련 기능) ------------------------------------------------------------------->
 function initRegisterPopup(dlg, host) {
   const itemsContainer = host.querySelector("#items");
   const addItemBtn = host.querySelector("#addItemBtn");
@@ -34,6 +37,8 @@ function initRegisterPopup(dlg, host) {
 
   let itemIndex = 0;
 
+
+//<!------------------------------------------------------------------------ 카테고리, 컬러칩 ------------------------------------------------------------------------>
   const categoryOptions = `
     <option value="인트로">인트로</option>
     <option value="메인 페이지">메인 페이지</option>
@@ -71,6 +76,7 @@ function initRegisterPopup(dlg, host) {
     { value: "GRAY", color: "gray" }
   ];
 
+  //<!---------------------------------------------------------------------- 유틸 함수 (렌더링) ---------------------------------------------------------------------->
   function renderColorChips(index) {
     return colorChips.map(
       chip => `
@@ -106,9 +112,11 @@ function initRegisterPopup(dlg, host) {
     itemIndex++;
   }
 
+  //<!------------------------------------------------------------------- 이벤트 바인딩 ------------------------------------------------------------------->
   addItemBtn.addEventListener("click", addItemForm);
   addItemForm(); // 기본 1개 추가
 
+  //<!------------------------------------------------------------------- 폼 제출 이벤트 ------------------------------------------------------------------->
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -163,6 +171,7 @@ function initRegisterPopup(dlg, host) {
     }
   });
 
+  //<!------------------------------------------------------------------- 닫기 버튼 ------------------------------------------------------------------->
   if (closeBtn) {
     closeBtn.addEventListener("click", () => dlg.close());
   }
