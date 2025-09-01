@@ -105,6 +105,40 @@ button{
   font-weight: 500;
 }
 
+/* ===================== */
+/* === [사이드바 서브메뉴] == */
+/* ===================== */
+.side-bar li.has-sub {
+  position: relative;
+}
+
+.side-bar li.has-sub .sub-menu {
+  display: none;
+  flex-direction: column;
+  background: #f7fafc;
+  margin-top: 8px;
+  overflow: hidden;
+}
+
+.side-bar li.has-sub .sub-menu li {
+  padding: 10px 12px;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+}
+
+.side-bar li.has-sub .sub-menu li:hover {
+  background: #e9f2ff;
+  color: #007bff;
+  font-weight: 600;
+}
+
+/* hover 시 드롭다운 */
+.side-bar li.has-sub:hover .sub-menu {
+  display: flex;
+}
+
+
 
 /* ================================== */
 /* === [템플릿 리스트 네비게이션] ===== */
