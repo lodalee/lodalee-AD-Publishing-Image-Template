@@ -8,25 +8,25 @@ export class AppController {
 
   @Get('/')
   redirectToIndex(@Res() res): void {
-    const filePath = join(__dirname, '..', 'public', 'pages', 'index.html');
+    const filePath = join(__dirname, '..', 'public', 'home', 'index.html');
     res.sendFile(filePath);
   }
 
   @Get('/index.html')
   getIndex(@Res() res): void {
-    const filePath = join(__dirname, '..', 'public', 'pages', 'index.html');
+    const filePath = join(__dirname, '..', 'public', 'home', 'index.html');
     res.sendFile(filePath);
   }
+
+  // @Get('/register.html')
+  // getRegister(@Res() res): void {
+  //   const filePath = join(__dirname, '..', 'public', 'pages', 'register.html');
+  //   res.sendFile(filePath);
+  // }
 
   @Get('/register.html')
-  getRegister(@Res() res): void {
-    const filePath = join(__dirname, '..', 'public', 'pages', 'register.html');
-    res.sendFile(filePath);
-  }
-
-  @Get('/pc-register.html')
   getRegister2(@Res() res): void {
-    const filePath = join(__dirname, '..', 'public', 'pages', 'pc-register.html');
+    const filePath = join(__dirname, '..', 'public', 'pc', 'register.html');
     res.sendFile(filePath);
   }
 }

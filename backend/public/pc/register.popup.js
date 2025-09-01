@@ -2,7 +2,7 @@ export async function mountRegisterPopup({
   trigger = '.template-list .nav button',
   dialog = '#popup-wrap',
   container = '#popup-inner',
-  url = '/pages/pc-register.html',
+  url = '/pc/register.html',
 } = {}) {
   const dlg = document.querySelector(dialog);
   const host = document.querySelector(container);
