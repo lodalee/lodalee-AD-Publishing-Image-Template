@@ -40,6 +40,7 @@ function initRegisterPopup(dlg, host) {
 
 //<!------------------------------------------------------------------------ 카테고리, 컬러칩 ------------------------------------------------------------------------>
   const categoryOptions = `
+    <option value="">카테고리 선택</option>
     <option value="인트로">인트로</option>
     <option value="메인 페이지">메인 페이지</option>
     <option value="동영상">동영상</option>
@@ -88,13 +89,21 @@ function initRegisterPopup(dlg, host) {
     ).join('');
   }
 
+  function updateItemCount() {
+    const countEl = document.getElementById("itemCount");
+    const count = itemsContainer.querySelectorAll(".item").length;
+    countEl.textContent = `(${count}개)`;
+  }
+
   function addItemForm() {
     const wrapper = document.createElement("div");
     wrapper.classList.add("item");
     wrapper.innerHTML = `
-      <h4>아이템 ${itemIndex + 1}</h4>
+      <div class="item-header">
+        ${itemIndex > 0 ? '<button type="button" class="delete-item-btn">✕</button>' : ''}
+      </div>
       <label>이미지 URL: </label>
-      <input type="text" name="items[${itemIndex}].imageUrl"><br>
+      <input type="text" name="items[${itemIndex}].imageUrl" required><br>
       <label>설명: </label>
       <input type="text" name="items[${itemIndex}].description"><br>
       <label>카테고리: </label>
@@ -108,29 +117,50 @@ function initRegisterPopup(dlg, host) {
         </div>
       </div>
     `;
+
+    // 삭제 버튼 이벤트
+    const deleteBtn = wrapper.querySelector(".delete-item-btn");
+    if (deleteBtn) {
+      deleteBtn.addEventListener("click", () => {
+        wrapper.remove();
+        updateItemCount(); // 삭제 후 갯수 갱신
+      });
+    }
+
     itemsContainer.appendChild(wrapper);
     itemIndex++;
+
+    updateItemCount(); // 추가 후 갯수 갱신
   }
 
-  //<!------------------------------------------------------------------- 이벤트 바인딩 ------------------------------------------------------------------->
+
+
+  //<!----------------------------------------------------------------------- 이벤트 바인딩 ----------------------------------------------------------------------->
   addItemBtn.addEventListener("click", addItemForm);
   addItemForm(); // 기본 1개 추가
 
-  //<!------------------------------------------------------------------- 폼 제출 이벤트 ------------------------------------------------------------------->
+  //<!----------------------------------------------------------------------- 폼 제출 이벤트 ---------------------------------------------------------------------->
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
 
     const items = [];
-    for (let i = 0; i < itemIndex; i++) {
+    const allItems = itemsContainer.querySelectorAll(".item");
+
+    for (let i = 0; i < allItems.length; i++) {
+      const category = formData.get(`items[${i}].category`);
+      const imageUrl = formData.get(`items[${i}].imageUrl`);
+      const description = formData.get(`items[${i}].description`);
+
+      // 컬러칩
       const chips = [];
-      host.querySelectorAll(`input[name="items[${i}].colorChip"]:checked`)
+      allItems[i].querySelectorAll(`input[name="items[${i}].colorChip"]:checked`)
         .forEach(chk => chips.push(chk.value));
 
       items.push({
-        imageUrl: formData.get(`items[${i}].imageUrl`),
-        description: formData.get(`items[${i}].description`),
-        category: formData.get(`items[${i}].category`),
+        imageUrl,
+        description,
+        category,
         colorChip: chips
       });
     }
@@ -171,7 +201,7 @@ function initRegisterPopup(dlg, host) {
     }
   });
 
-  //<!------------------------------------------------------------------- 닫기 버튼 ------------------------------------------------------------------->
+  //<!----------------------------------------------------------------------- 닫기 버튼 ---------------------------------------------------------------------->
   if (closeBtn) {
     closeBtn.addEventListener("click", () => dlg.close());
   }
