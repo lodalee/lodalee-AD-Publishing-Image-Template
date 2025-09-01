@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Template 등록</title>
+  <link rel="stylesheet" href="/css/pc-register.css" />
+</head>
+<body>
+  <button id="popup-wrap-close-btn" style="float:right;">✕</button>
+  
+  <h1>Template 등록</h1>
+  <form id="templateForm">
+    <div>
+      <label>제목: </label>
+      <input type="text" name="title" required maxlength="200">
+    </div>
+
+    <div>
+      <label>작성자: </label>
+      <input type="text" name="creator" required>
+    </div>
+
+    <div>
+      <label>제작일: </label>
+      <input type="date" name="producedDate" required>
+    </div>
+
+    <div>
+      <label>타입: </label>
+      <select name="type" required>
+        <option value="custom">custom</option>
+        <option value="reference">reference</option>
+      </select>
+    </div>
+
+    <h3>아이템 목록</h3>
+    <div id="items"></div>
+    <button type="button" id="addItemBtn">+ 아이템 추가</button>
+
+    <div style="margin-top: 20px;">
+      <button type="submit">등록</button>
+    </div>
+  </form>
+</body>
+</html>

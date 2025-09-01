@@ -22,6 +22,6 @@ async function bootstrap() {
     origin: true,
     // Credentials: true,
   });
-  console.log(`서버가 ${port} 포트에서 실행 중입니다. 현재 mode => (${mode})`);
+  console.log(`서버가 ${port} 포트에서 실행 중입니다. 현재 mode => (${mode}) 주소 : http://localhost:${port}`);
 }
 bootstrap();

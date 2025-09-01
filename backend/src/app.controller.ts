@@ -23,4 +23,10 @@ export class AppController {
     const filePath = join(__dirname, '..', 'public', 'pages', 'register.html');
     res.sendFile(filePath);
   }
+
+  @Get('/pc-register.html')
+  getRegister2(@Res() res): void {
+    const filePath = join(__dirname, '..', 'public', 'pages', 'pc-register.html');
+    res.sendFile(filePath);
+  }
 }

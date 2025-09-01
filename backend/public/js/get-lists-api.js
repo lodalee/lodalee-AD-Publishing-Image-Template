@@ -80,7 +80,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const loadTemplates = async (search = '') => {
     container.innerHTML = '로딩 중...';
     try {
-      const res = await fetch(`/api/template${search ? '?search=' + encodeURIComponent(search) : ''}`);
+      const res = await fetch(`/api/pc/template${search ? '?search=' + encodeURIComponent(search) : ''}`);
       const data = await res.json();
       container.innerHTML = renderTemplates(data);
 
@@ -95,6 +95,15 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // 6. 검색 이벤트
   searchBox.addEventListener('keydown', e => {
-    if (e.key === 'Enter') loadTemplates(searchBox.value.trim());
+    if (e.key === 'Enter') {
+      e.preventDefault(); // 기본 폼 제출 방지
+      const keyword = searchBox.value.trim();
+      if (!keyword) return; // 빈 값이면 무시
+
+      loadTemplates(keyword);
+
+      // ✅ 검색 실행 후 입력값 초기화
+      searchBox.value = '';
+    }
   });
 });

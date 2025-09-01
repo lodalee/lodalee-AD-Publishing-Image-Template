@@ -16,7 +16,7 @@ document.addEventListener("click", (e) => {
 
   // 중복 방지
   if (isDuplicateInCandidates(imageUrl)) {
-    alert("같은 사진을 추가했습니다.");
+    openAlertPopup("같은 사진을 추가했습니다.");
     return;
   }
 
@@ -25,7 +25,7 @@ document.addEventListener("click", (e) => {
   const imagesWrap = group.querySelector(".candidate-images");
   const count = imagesWrap.querySelectorAll(".candidate-thumb-wrapper").length;
   if (count >= 6) {
-    alert("6개까지만 선택 가능합니다.");
+    openAlertPopup("6개까지만 선택 가능합니다.");
     return;
   }
 
@@ -74,26 +74,26 @@ document.addEventListener("click", (e) => {
   }
 });
 
-//<!------------------------------------------------------------------- 조합 영역 이미지 교체/추가 ------------------------------------------------------------------->
+//<!-------------------------------------------------------------------- 조합 영역 이미지 교체/추가 -------------------------------------------------------------------->
 // 이미지 교체 기능
 document.addEventListener("click", (e) => {
-  if (!e.target.classList.contains("candidate-thumb")) return;
+  const thumb = e.target.closest(".candidate-thumb");
+  if (!thumb) return;
 
-  const imageUrl = e.target.src;
+  const imageUrl = thumb.src;
+  const newCategory = thumb.closest(".candidate-group")?.dataset.category?.trim() || "";
 
   if (selectedComboItem) {
-    // 선택된 combo-item이 있으면 교체
+    // 선택된 combo-item이 있을 때만 교체
+    const categoryEl = selectedComboItem.querySelector(".combo-category");
     selectedComboItem.querySelector("img").src = imageUrl;
-    // 선택 상태 유지 (바깥 클릭하기 전까지 계속 교체 가능)
+    if (categoryEl) categoryEl.textContent = newCategory;
     return;
   }
 
   // 선택된 combo-item 없으면 → 새로 추가
-  const category = e.target.closest(".candidate-group")?.dataset.category?.trim() || "";
-
-  // 조합영역 중복 방지
   if (isDuplicateInCombo(imageUrl)) {
-    alert("조합 영역에 이미 있는 사진입니다.");
+    openAlertPopup("조합 영역에 이미 있는 사진입니다.");
     return;
   }
 
@@ -104,7 +104,7 @@ document.addEventListener("click", (e) => {
     <div class="combo-img-wrapper">
       <span class="item-remove combo-remove">ㅡ</span>
       <img src="${imageUrl}" alt="조합 이미지">
-      <span class="combo-category">${category}</span>
+      <span class="combo-category">${newCategory}</span>
     </div>
   `;
   comboList.appendChild(item);
@@ -149,7 +149,7 @@ comboList.addEventListener('dragend', () => {
 document.getElementById("mergeBtn").addEventListener("click", async () => {
   const images = comboList.querySelectorAll("img");
   if (images.length === 0) {
-    alert("선택된 이미지가 없습니다.");
+    openAlertPopup("선택된 이미지가 없습니다.");
     return;
   }
 
@@ -295,3 +295,31 @@ function loadImage(src) {
     img.src = src;
   });
 }
+
+/** 알림 팝업  */
+// 열기
+function openAlertPopup(message) {
+  document.getElementById("alertMessage").textContent = message;
+  document.getElementById("alertPopup").classList.add("-on");
+}
+
+// 닫기
+function closeAlertPopup() {
+  document.getElementById("alertPopup").classList.remove("-on");
+}
+
+// 키보드 이벤트 (Enter, Esc)
+document.addEventListener("keydown", (e) => {
+  const popup = document.getElementById("alertPopup");
+  if (!popup.classList.contains("-on")) return; // 팝업 열려있을 때만 반응
+
+  if (e.key === "Escape" || e.key === "Esc") {
+    closeAlertPopup();
+  }
+  if (e.key === "Enter") {
+    closeAlertPopup();
+  }
+});
+
+// 버튼 이벤트 연결
+document.getElementById("alertOkBtn").addEventListener("click", closeAlertPopup);
