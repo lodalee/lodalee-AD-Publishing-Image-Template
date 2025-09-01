@@ -80,7 +80,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const loadTemplates = async (search = '') => {
     container.innerHTML = '로딩 중...';
     try {
-      const res = await fetch(`/api/template${search ? '?search=' + encodeURIComponent(search) : ''}`);
+      const res = await fetch(`/api/pc/template${search ? '?search=' + encodeURIComponent(search) : ''}`);
       const data = await res.json();
       container.innerHTML = renderTemplates(data);
 

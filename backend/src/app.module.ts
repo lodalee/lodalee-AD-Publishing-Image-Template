@@ -5,11 +5,10 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as mongoose from 'mongoose'; // 또는 import mongoose from 'mongoose';
 import { LoggerMiddleware } from './middleware/logger.middleware';
-import { TemplateModule } from './template/template.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { S3Module } from './s3/s3.module';
-import { MoTemplateModule } from './mo_template/mo_template.module';
+import { PcTemplateModule } from './pc/pc-template.module';
 
 @Module({
   imports: [
@@ -33,9 +32,8 @@ import { MoTemplateModule } from './mo_template/mo_template.module';
       },
       inject: [ConfigService],
     }),
-    TemplateModule,
     S3Module,
-    MoTemplateModule,
+    PcTemplateModule
   ],
   controllers: [AppController],
   providers: [AppService],
